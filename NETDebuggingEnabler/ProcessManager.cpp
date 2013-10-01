@@ -51,7 +51,7 @@ namespace Managers
 			return vector<wxString>();
 		}
 		
-		HMODULE modules[10];
+		HMODULE modules[150];
 		DWORD needed;
 		auto size = sizeof(modules);
 		if (!EnumProcessModulesEx(process, modules, sizeof(modules), &needed, LIST_MODULES_ALL))
