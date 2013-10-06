@@ -14,7 +14,7 @@ namespace Frames
 
 		//Frame Initialization
 
-		SetIcon(wxICON(BUGICON2));
+		SetIcon(wxICON(BUGICON2)); 
 
 		this->SetSizeHints(FrameWidth, FrameHeight);
 		this->BuildLayout();

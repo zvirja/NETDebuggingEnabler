@@ -47,12 +47,15 @@ namespace Frames
 		if (displayFullPath)
 			return modulePath;
 		wxFileName modulePathFileName(modulePath);
-		return wxString::Format(L"%s.%s",modulePathFileName.GetName(),modulePathFileName.GetExt());
+		return wxString::Format(L"%s.%s", modulePathFileName.GetName(), modulePathFileName.GetExt());
 	}
 	std::vector<wxString> ModulesCheckListBox::ApplyPathFilter(const std::vector < wxString> &modules)
 	{
-		wxString filter = this->pathFilter.Upper();
-		if (filter == wxEmptyString || filter.length() == 0)
+		if (this->pathFilter == wxEmptyString)
+			return modules;
+		wxString filter = this->pathFilter;
+		filter.Trim().MakeUpper();
+		if (filter.length() == 0)
 			return modules;
 		vector<wxString> result;
 		for (auto& modulePath : modules)
