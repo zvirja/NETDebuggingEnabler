@@ -1,12 +1,5 @@
+#include "baseset.h"
 #include "MainFrame.h"
-#include <memory>
-#include <wx\button.h>
-#include <wx\listbox.h>
-#include <wx\checklst.h>
-#include <wx/wupdlock.h>
-#include <wx\event.h>
-#include <vector>
-#include <wx\string.h>
 
 using namespace std;
 using namespace Managers;
@@ -88,7 +81,7 @@ namespace Frames
 		bSizerModules = new wxBoxSizer(wxHORIZONTAL);
 
 		wxArrayString modulesListBoxChoices;
-		modulesListBox = new wxCheckListBox(this, ID_MODULESLISTBOX, wxDefaultPosition, wxDefaultSize, modulesListBoxChoices, 0);
+		modulesListBox = new ModulesCheckListBox(this, ID_MODULESLISTBOX, wxDefaultPosition, wxDefaultSize, modulesListBoxChoices, wxLB_SORT);
 		bSizerModules->Add(modulesListBox, 1, wxBOTTOM | wxEXPAND | wxLEFT | wxRIGHT, 5);
 
 
@@ -105,6 +98,8 @@ namespace Frames
 
 	void MainFrame::RefreshProcessList()
 	{
+		StatusTextStackUpdater statusUpdater(this, L"Process list refreshing...");
+		wxWindowUpdateLocker thisUpdateLocker(processesBox);
 		processesBox->Clear();
 		modulesListBox->Clear();
 		vector<ProcessInfo> processItems = processManager->GetProcessesList();
@@ -147,7 +142,7 @@ namespace Frames
 		vector<wxString> modules = processManager->GetModulesForProcessId(processInfo.GetID(), result);
 		if (result != ERROR_SUCCESS)
 		{
-			modulesListBox->Clear();
+			modulesListBox->ClearModules();
 
 			//TCHAR   lpBuffer[256] = L"?";
 			//FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM,                 // It´s a system error
@@ -161,20 +156,8 @@ namespace Frames
 		}
 		else
 		{
-			FillModulesForProcess(modules);
+			modulesListBox->ReInitializeModules(modules);
 		}
-	}
-
-	void MainFrame::FillModulesForProcess(const vector<wxString>& modules)
-	{
-		this->PushStatusText(L"Fetching module list");
-		wxWindowUpdateLocker uiLocker(this);
-		modulesListBox->Clear();
-		for (auto& moduleLabel : modules)
-		{
-			modulesListBox->Append(moduleLabel);
-		}
-		this->PopStatusText();
 	}
 
 
@@ -183,15 +166,15 @@ namespace Frames
 		EVT_COMBOBOX(ID_PROCESSLIST, MainFrame::OnProcessSelected)
 		EVT_CHECKBOX(ID_PROCESSFILTERBOX, MainFrame::OnFilterEnabledChanged)
 		EVT_TEXT(ID_PROCESSFILTERTEXT, MainFrame::OnFilterTextChanged)
-		END_EVENT_TABLE()
+		EVT_CHECKBOX(ID_MODULES_DISPLAYFULLPATHBOX, MainFrame::OnDisplayFullPathChanged)
+		EVT_CHECKBOX(ID_MODULES_APPLYPATHFILTERBOX, MainFrame::OnModulePathFilterEnabledChanged)
+		EVT_TEXT(ID_MODULES_FILTERTEXT, MainFrame::OnModulePathFilterTextChanged)
+	END_EVENT_TABLE()
 
-		void MainFrame::OnRefresh(wxCommandEvent& event)
+	void MainFrame::OnRefresh(wxCommandEvent& event)
 	{
-		this->PushStatusText(L"Process list refreshing...");
-		wxWindowUpdateLocker thisUpdateLocker(this);
 		RefreshProcessList();
-		this->PopStatusText();
-		}
+	}
 
 	void MainFrame::OnProcessSelected(wxCommandEvent& event)
 	{
@@ -208,6 +191,33 @@ namespace Frames
 	void MainFrame::OnFilterTextChanged(wxCommandEvent& event)
 	{
 		OnRefresh(event);
+	}
+
+	void MainFrame::OnDisplayFullPathChanged(wxCommandEvent& event)
+	{
+		auto displayFullPathBox = static_cast<wxCheckBox*>(event.GetEventObject());
+		this->modulesListBox->SetDispayFullPath(displayFullPathBox->IsChecked());
+	}
+
+	void MainFrame::OnModulePathFilterEnabledChanged(wxCommandEvent& event)
+	{
+		auto enablePathFilter = static_cast<wxCheckBox*>(event.GetEventObject());
+		if (enablePathFilter->IsChecked())
+		{
+			this->modulesListBox->SetPathFilter(this->modulesFilterTextCtrl->GetValue());
+			this->modulesFilterTextCtrl->Enable(true);
+		}
+		else
+		{
+			this->modulesListBox->SetPathFilter(wxEmptyString);
+			this->modulesFilterTextCtrl->Enable(false);
+
+		}
+	}
+
+	void MainFrame::OnModulePathFilterTextChanged(wxCommandEvent& event)
+	{
+		this->modulesListBox->SetPathFilter(this->modulesFilterTextCtrl->GetValue());
 	}
 
 }

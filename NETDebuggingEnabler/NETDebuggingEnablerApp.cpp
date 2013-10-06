@@ -1,3 +1,4 @@
+#include "baseset.h"
 #include "NETDebuggingEnablerApp.h"
 #include "MainFrame.h"
 #include "PrivilegiesAdjuster.h"

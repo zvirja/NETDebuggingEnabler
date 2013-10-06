@@ -16,14 +16,17 @@
     <Filter Include="Source Files\Frames">
       <UniqueIdentifier>{ede6b448-5112-4b32-b8af-ebc51c184b4e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Frames">
-      <UniqueIdentifier>{807fb879-01bb-4197-bd61-47a374dfeedb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Managers">
       <UniqueIdentifier>{5b927129-e472-4c57-9eab-648e02a43728}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Managers">
       <UniqueIdentifier>{53915c2f-d3d9-4675-bebf-f1bd3f05b816}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\MyUI">
+      <UniqueIdentifier>{807fb879-01bb-4197-bd61-47a374dfeedb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\MyUI\ModuleCheckListBox">
+      <UniqueIdentifier>{034fb2bf-05cd-4257-a189-d7d83fbbcd61}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -31,7 +34,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MainFrame.h">
-      <Filter>Header Files\Frames</Filter>
+      <Filter>Header Files\MyUI</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
@@ -43,10 +46,22 @@
       <Filter>Header Files\Managers</Filter>
     </ClInclude>
     <ClInclude Include="ProcessInfo.h">
-      <Filter>Header Files\Frames</Filter>
+      <Filter>Header Files\MyUI</Filter>
     </ClInclude>
     <ClInclude Include="unique_handle.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baseset.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StatusTextStackUpdater.h">
+      <Filter>Header Files\MyUI</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleCheckListBoxItem.h">
+      <Filter>Header Files\MyUI\ModuleCheckListBox</Filter>
+    </ClInclude>
+    <ClInclude Include="ModulesCheckListBox.h">
+      <Filter>Header Files\MyUI\ModuleCheckListBox</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -70,6 +85,12 @@
     </ClCompile>
     <ClCompile Include="unique_handle.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="baseset.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ModulesCheckListBox.cpp">
+      <Filter>Source Files\Frames</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

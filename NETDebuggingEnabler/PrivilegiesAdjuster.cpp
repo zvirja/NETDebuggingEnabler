@@ -1,7 +1,6 @@
+#include "baseset.h"
 #include "PrivilegiesAdjuster.h"
 #include <processthreadsapi.h>
-#include <wx\msgdlg.h>
-#include "unique_handle.h"
 namespace Managers
 {
 

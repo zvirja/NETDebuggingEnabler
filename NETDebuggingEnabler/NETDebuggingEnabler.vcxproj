@@ -101,13 +101,13 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeaderFile>baseset.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -154,17 +154,25 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="baseset.h" />
     <ClInclude Include="MainFrame.h" />
+    <ClInclude Include="ModuleCheckListBoxItem.h" />
+    <ClInclude Include="ModulesCheckListBox.h" />
     <ClInclude Include="NETDebuggingEnablerApp.h" />
     <ClInclude Include="PrivilegiesAdjuster.h" />
     <ClInclude Include="ProcessInfo.h" />
     <ClInclude Include="ProcessManager.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="StatusTextStackUpdater.h" />
     <ClInclude Include="unique_handle.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="baseset.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="EntryPoint.cpp" />
     <ClCompile Include="MainFrame.cpp" />
+    <ClCompile Include="ModulesCheckListBox.cpp" />
     <ClCompile Include="NETDebuggingEnablerApp.cpp" />
     <ClCompile Include="PrivilegiesAdjuster.cpp" />
     <ClCompile Include="ProcessInfo.cpp" />

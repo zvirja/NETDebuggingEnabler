@@ -1,12 +1,7 @@
 #pragma once
-#include <wx/frame.h>
-#include <wx/event.h>
-#include <wx/combobox.h>
-#include <memory>
-#include "ProcessManager.h"
-#include <wx/textctrl.h>
-#include <wx/checkbox.h>
-#include <wx/statline.h>
+#include "baseset.h"
+#include "ModulesCheckListBox.h"
+
 
 
 namespace Frames
@@ -37,7 +32,7 @@ namespace Frames
 		wxCheckBox* mudulesFullPathCheckBox;
 		wxCheckBox* modulesFilterPathCheckBox;
 		wxTextCtrl* modulesFilterTextCtrl;
-		wxCheckListBox* modulesListBox;
+		ModulesCheckListBox* modulesListBox;
 
 		std::unique_ptr<Managers::ProcessManager> processManager;
 
@@ -53,5 +48,9 @@ namespace Frames
 		void OnProcessSelected(wxCommandEvent& event);
 		void OnFilterEnabledChanged(wxCommandEvent& event);
 		void OnFilterTextChanged(wxCommandEvent& event);
+
+		void OnDisplayFullPathChanged(wxCommandEvent& event);
+		void OnModulePathFilterEnabledChanged(wxCommandEvent& event);
+		void OnModulePathFilterTextChanged(wxCommandEvent& event);
 	};
 }

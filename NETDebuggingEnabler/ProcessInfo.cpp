@@ -1,3 +1,4 @@
+#include "baseset.h"
 #include "ProcessInfo.h"
 
 using namespace std;

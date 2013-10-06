@@ -1,3 +1,4 @@
+#include "baseset.h"
 #pragma comment(lib, "psapi.lib")
 #include "ProcessManager.h"
 #include <TlHelp32.h>
