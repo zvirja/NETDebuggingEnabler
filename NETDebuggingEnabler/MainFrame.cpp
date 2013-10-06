@@ -25,6 +25,7 @@ namespace Frames
 
 		this->SetSizeHints(FrameWidth, FrameHeight);
 		this->BuildLayout();
+		this->Centre(wxBOTH);
 		this->SetBackgroundColour(wxColour(L"LightGray"));
 		this->SetStatusBar(new wxStatusBar(this));
 		this->SetStatusText("Ready");
@@ -53,13 +54,16 @@ namespace Frames
 		bSizerProsesses = new wxBoxSizer(wxHORIZONTAL);
 
 		processesBox = new wxComboBox(this, ID_PROCESSLIST, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_READONLY | wxCB_SORT);
-		bSizerProsesses->Add(processesBox, 1, wxALIGN_CENTER_VERTICAL | wxALL | wxEXPAND, 5);
+		bSizerProsesses->Add(processesBox, 1, wxALIGN_CENTER_VERTICAL | wxBOTTOM | wxEXPAND | wxLEFT | wxRIGHT, 5);
 
 		refreshButton = new wxButton(this, wxID_REFRESH, wxT("Refresh list"), wxDefaultPosition, wxDefaultSize, 0);
-		bSizerProsesses->Add(refreshButton, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+		bSizerProsesses->Add(refreshButton, 0, wxALIGN_CENTER_VERTICAL | wxBOTTOM | wxLEFT | wxRIGHT, 5);
 
 
 		bSizerMainVert->Add(bSizerProsesses, 0, wxEXPAND | wxLEFT | wxRIGHT, 5);
+
+		auto m_staticline1 = new wxStaticLine(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL);
+		bSizerMainVert->Add(m_staticline1, 0, wxEXPAND | wxLEFT | wxRIGHT, 10);
 
 		wxBoxSizer* bSizerModulesControl;
 		bSizerModulesControl = new wxBoxSizer(wxHORIZONTAL);
@@ -93,8 +97,6 @@ namespace Frames
 
 		this->SetSizer(bSizerMainVert);
 		this->Layout();
-
-		this->Centre(wxBOTH);
 	}
 
 	MainFrame::~MainFrame()

@@ -6,6 +6,7 @@
 #include "ProcessManager.h"
 #include <wx/textctrl.h>
 #include <wx/checkbox.h>
+#include <wx/statline.h>
 
 
 namespace Frames
