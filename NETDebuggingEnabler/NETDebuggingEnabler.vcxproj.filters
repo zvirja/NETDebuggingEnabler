@@ -45,6 +45,9 @@
     <ClInclude Include="ProcessInfo.h">
       <Filter>Header Files\Frames</Filter>
     </ClInclude>
+    <ClInclude Include="unique_handle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="NETDebuggingEnablerApp.cpp">
@@ -64,6 +67,9 @@
     </ClCompile>
     <ClCompile Include="ProcessInfo.cpp">
       <Filter>Source Files\Frames</Filter>
+    </ClCompile>
+    <ClCompile Include="unique_handle.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

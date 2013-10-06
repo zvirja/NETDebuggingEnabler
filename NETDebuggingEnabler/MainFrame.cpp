@@ -15,47 +15,86 @@ namespace Frames
 {
 	MainFrame::MainFrame() :wxFrame(nullptr, wxID_ANY, wxT(".NET assembly debugging enabler"),
 		wxDefaultPosition, wxSize(FrameWidth, FrameHeight),
-		wxMINIMIZE_BOX | wxSYSTEM_MENU | wxCAPTION | wxCLOSE_BOX | wxCLIP_CHILDREN | wxNO_FULL_REPAINT_ON_RESIZE)
+		wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxSYSTEM_MENU | wxCAPTION | wxCLOSE_BOX | wxCLIP_CHILDREN | wxNO_FULL_REPAINT_ON_RESIZE)
 	{
 		this->processManager = unique_ptr < ProcessManager>(new ProcessManager());
 
-//Frame Initialization
+		//Frame Initialization
 
 		SetIcon(wxICON(BUGICON2));
-		int rectW, rectH;
 
-		this->GetClientSize(&rectW, &rectH);
-
-		filterCheckBox = new wxCheckBox(this, ID_PROCESSFILTERBOX, "Filter by name", wxPoint(10, 8));
-		filterCheckBox->SetValue(true);
-		auto filterCheckBoxSize = filterCheckBox->GetSize();
-		auto filterCheckBoxPos = filterCheckBox->GetPosition();
-
-		filterTextBox = new wxTextCtrl(this, ID_PROCESSFILTERTEXT, wxT("chrome.exe"), 
-			wxPoint(filterCheckBoxPos.x + filterCheckBoxSize.GetX() + 5, 6), wxSize(150, 20));
-
-
-		processesBox = new wxComboBox(this, ID_PROCESSLIST, wxT(""), 
-			wxPoint(10, filterCheckBoxPos.y + filterCheckBoxSize.GetY() + 10), wxSize(220, 25), wxArrayString(), wxCB_SORT);
-
-
-		auto processesBoxSize = processesBox->GetSize();
-		auto processesBoxPos = processesBox->GetPosition();
-
-		wxButton* refreshButton = new wxButton(this, wxID_REFRESH, wxT("Refresh list"), 
-			wxPoint(processesBoxPos.x + processesBoxSize.GetX() + 5, processesBoxPos.y - 2), wxSize(85, 27));
-
-		modulesListBox = new wxCheckListBox(this, ID_MODULESLISTBOX,
-			wxPoint(10, processesBoxPos.y + processesBoxSize.GetY() + 10),
-			wxSize(rectW - 20, rectH - processesBoxPos.y - processesBoxSize.GetY() - 40),
-			wxArrayString());
-
-		this->SetBackgroundColour(wxColour(wxT("LightGray")));
-
+		this->SetSizeHints(FrameWidth, FrameHeight);
+		this->BuildLayout();
+		this->SetBackgroundColour(wxColour(L"LightGray"));
 		this->SetStatusBar(new wxStatusBar(this));
-		
 		this->SetStatusText("Ready");
 		RefreshProcessList();
+	}
+
+	void MainFrame::BuildLayout()
+	{
+		wxBoxSizer* bSizerMainVert;
+		bSizerMainVert = new wxBoxSizer(wxVERTICAL);
+
+		wxBoxSizer* bSizerFilter;
+		bSizerFilter = new wxBoxSizer(wxHORIZONTAL);
+
+		filterCheckBox = new wxCheckBox(this, ID_PROCESSFILTERBOX, wxT("Process name filter:"), wxDefaultPosition, wxDefaultSize, 0);
+		filterCheckBox->SetValue(true);
+		bSizerFilter->Add(filterCheckBox, 0, wxALIGN_CENTER_VERTICAL | wxBOTTOM | wxLEFT | wxTOP, 5);
+
+		filterTextBox = new wxTextCtrl(this, ID_PROCESSFILTERTEXT, wxT("chrome.exe"), wxDefaultPosition, wxSize(205, -1), 0);
+		bSizerFilter->Add(filterTextBox, 0, wxALIGN_CENTER_VERTICAL | wxBOTTOM | wxRIGHT | wxTOP, 5);
+
+
+		bSizerMainVert->Add(bSizerFilter, 0, wxLEFT | wxRIGHT | wxTOP, 5);
+
+		wxBoxSizer* bSizerProsesses;
+		bSizerProsesses = new wxBoxSizer(wxHORIZONTAL);
+
+		processesBox = new wxComboBox(this, ID_PROCESSLIST, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_READONLY | wxCB_SORT);
+		bSizerProsesses->Add(processesBox, 1, wxALIGN_CENTER_VERTICAL | wxALL | wxEXPAND, 5);
+
+		refreshButton = new wxButton(this, wxID_REFRESH, wxT("Refresh list"), wxDefaultPosition, wxDefaultSize, 0);
+		bSizerProsesses->Add(refreshButton, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+
+
+		bSizerMainVert->Add(bSizerProsesses, 0, wxEXPAND | wxLEFT | wxRIGHT, 5);
+
+		wxBoxSizer* bSizerModulesControl;
+		bSizerModulesControl = new wxBoxSizer(wxHORIZONTAL);
+
+		mudulesFullPathCheckBox = new wxCheckBox(this, ID_MODULES_DISPLAYFULLPATHBOX, wxT("Full paths"), wxDefaultPosition, wxDefaultSize, 0);
+		mudulesFullPathCheckBox->SetToolTip(wxT("Display full paths"));
+
+		bSizerModulesControl->Add(mudulesFullPathCheckBox, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, 5);
+
+		modulesFilterPathCheckBox = new wxCheckBox(this, ID_MODULES_APPLYPATHFILTERBOX, wxT("Path filter:"), wxDefaultPosition, wxDefaultSize, 0);
+		bSizerModulesControl->Add(modulesFilterPathCheckBox, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, 10);
+
+		modulesFilterTextCtrl = new wxTextCtrl(this, ID_MODULES_FILTERTEXT, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0);
+		modulesFilterTextCtrl->Enable(false);
+
+		bSizerModulesControl->Add(modulesFilterTextCtrl, 1, wxALIGN_CENTER_VERTICAL | wxBOTTOM | wxRIGHT | wxTOP, 5);
+
+
+		bSizerMainVert->Add(bSizerModulesControl, 0, wxEXPAND | wxLEFT | wxRIGHT, 5);
+
+		wxBoxSizer* bSizerModules;
+		bSizerModules = new wxBoxSizer(wxHORIZONTAL);
+
+		wxArrayString modulesListBoxChoices;
+		modulesListBox = new wxCheckListBox(this, ID_MODULESLISTBOX, wxDefaultPosition, wxDefaultSize, modulesListBoxChoices, 0);
+		bSizerModules->Add(modulesListBox, 1, wxBOTTOM | wxEXPAND | wxLEFT | wxRIGHT, 5);
+
+
+		bSizerMainVert->Add(bSizerModules, 1, wxBOTTOM | wxEXPAND | wxLEFT | wxRIGHT, 5);
+
+
+		this->SetSizer(bSizerMainVert);
+		this->Layout();
+
+		this->Centre(wxBOTH);
 	}
 
 	MainFrame::~MainFrame()
@@ -75,7 +114,7 @@ namespace Frames
 		for (auto iterator = processItems.begin(); iterator != processItems.end(); iterator++)
 		{
 			ProcessInfo& info = *iterator;
-			processesBox->Append(wxString::Format("%s (%d)", info.GetName(), info.GetID()), new ProcessInfo(info));
+			processesBox->Append(wxString::Format(L"%s (%d)", info.GetName(), info.GetID()), new ProcessInfo(info));
 		}
 		if (processItems.size() > 0)
 		{
@@ -92,12 +131,12 @@ namespace Frames
 			return processes;
 		auto textToFilter = filterTextBox->GetValue().Upper();
 		vector<ProcessInfo> result;
-		for (auto iterator = processes.begin(); iterator != processes.end();++iterator)
+		for (auto& process : processes)
 		{
-			if (iterator->GetName().Upper().Contains(textToFilter))
-				result.push_back(*iterator);
+			if (process.GetName().Upper().Contains(textToFilter))
+				result.push_back(process);
 		}
-		return result;
+		return move(result);
 	}
 
 	void MainFrame::UpdateModulesForProcessInfo(const Frames::ProcessInfo& processInfo)
@@ -106,50 +145,51 @@ namespace Frames
 		vector<wxString> modules = processManager->GetModulesForProcessId(processInfo.GetID(), result);
 		if (result != ERROR_SUCCESS)
 		{
-			TCHAR   lpBuffer[256] = _T("?");
-				FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM,                 // It´s a system error
-				NULL,                                      // No string to be formatted needed
-				result,                               // Hey Windows: Please explain this error!
-				MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),  // Do it in the standard language
-				lpBuffer,              // Put the message here
-				sizeof(lpBuffer),                     // Number of bytes to store the message
-				NULL);
+			modulesListBox->Clear();
 
-				wxMessageBox(wxString::Format(L"Unable to read modules: %s", lpBuffer));
+			//TCHAR   lpBuffer[256] = L"?";
+			//FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM,                 // It´s a system error
+			//	NULL,                                      // No string to be formatted needed
+			//	result,                               // Hey Windows: Please explain this error!
+			//	MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),  // Do it in the standard language
+			//	lpBuffer,              // Put the message here
+			//	sizeof(lpBuffer),                     // Number of bytes to store the message
+			//	NULL);
+			//wxMessageBox(wxString::Format(L"Unable to read modules: %s", lpBuffer));
 		}
 		else
 		{
 			FillModulesForProcess(modules);
 		}
 	}
-	
+
 	void MainFrame::FillModulesForProcess(const vector<wxString>& modules)
 	{
-		this->PushStatusText(wxT("Fetching module list"));
+		this->PushStatusText(L"Fetching module list");
 		wxWindowUpdateLocker uiLocker(this);
 		modulesListBox->Clear();
-		for (auto iterator = modules.begin(); iterator != modules.end(); iterator++)
+		for (auto& moduleLabel : modules)
 		{
-			modulesListBox->Append(*iterator);
+			modulesListBox->Append(moduleLabel);
 		}
 		this->PopStatusText();
 	}
-	
+
 
 	BEGIN_EVENT_TABLE(MainFrame, wxFrame)
 		EVT_BUTTON(wxID_REFRESH, MainFrame::OnRefresh)
 		EVT_COMBOBOX(ID_PROCESSLIST, MainFrame::OnProcessSelected)
 		EVT_CHECKBOX(ID_PROCESSFILTERBOX, MainFrame::OnFilterEnabledChanged)
 		EVT_TEXT(ID_PROCESSFILTERTEXT, MainFrame::OnFilterTextChanged)
-	END_EVENT_TABLE()
+		END_EVENT_TABLE()
 
-	void MainFrame::OnRefresh(wxCommandEvent& event)
+		void MainFrame::OnRefresh(wxCommandEvent& event)
 	{
-		this->PushStatusText("Process list refreshing...");
+		this->PushStatusText(L"Process list refreshing...");
 		wxWindowUpdateLocker thisUpdateLocker(this);
 		RefreshProcessList();
 		this->PopStatusText();
-	}
+		}
 
 	void MainFrame::OnProcessSelected(wxCommandEvent& event)
 	{
@@ -167,7 +207,5 @@ namespace Frames
 	{
 		OnRefresh(event);
 	}
-
-
 
 }

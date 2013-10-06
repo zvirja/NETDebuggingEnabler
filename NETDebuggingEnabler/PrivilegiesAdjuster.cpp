@@ -1,15 +1,17 @@
 #include "PrivilegiesAdjuster.h"
 #include <processthreadsapi.h>
 #include <wx\msgdlg.h>
+#include "unique_handle.h"
 namespace Managers
 {
 
 
 	bool PrivilegiesAdjuster::SetDebugPrevilege()
 	{
-		HANDLE hCurrentProcess = GetCurrentProcess(); // 
+		unique_handle hCurrentProcess(GetCurrentProcess()); // 
 		HANDLE hToken;
-		BOOL obtainedProcessToken = OpenProcessToken(hCurrentProcess, TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY, &hToken);
+		BOOL obtainedProcessToken = OpenProcessToken(hCurrentProcess.get(), TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY, &hToken);
+		unique_handle tokenHandle(hToken);
 		if (obtainedProcessToken)
 		{
 			bool result = SetPrivilege(hToken, SE_DEBUG_NAME, TRUE);

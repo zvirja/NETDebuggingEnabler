@@ -21,7 +21,5 @@ namespace Managers
 		~ProcessManager();
 		std::vector<Frames::ProcessInfo> GetProcessesList();
 		std::vector<wxString> GetModulesForProcessId(int processID,DWORD& resultCode);
-	private:
-		HANDLE OpenProcessCustom(DWORD DesiredAccess, HANDLE dwProcessId);
 	};
 }

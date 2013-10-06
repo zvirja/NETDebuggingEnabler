@@ -3,6 +3,8 @@
 #include <TlHelp32.h>
 #include <Psapi.h>
 #include <sstream>
+#include "unique_handle.h"
+#include <array>
 
 using namespace std;
 using namespace Frames;
@@ -19,14 +21,13 @@ namespace Managers
 
 	vector<ProcessInfo> ProcessManager::GetProcessesList()
 	{
-		HANDLE hProcessSnap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
-		if (hProcessSnap == INVALID_HANDLE_VALUE)
+		unique_handle hProcessSnap(CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0));
+		if (hProcessSnap.get() == INVALID_HANDLE_VALUE)
 			return vector<ProcessInfo>();
 		PROCESSENTRY32 pe32;
 		pe32.dwSize = sizeof(PROCESSENTRY32);
-		if (!Process32First(hProcessSnap, &pe32))
+		if (!Process32First(hProcessSnap.get(), &pe32))
 		{
-			CloseHandle(hProcessSnap);
 			return vector<ProcessInfo>();
 		}
 
@@ -35,41 +36,37 @@ namespace Managers
 		{
 			if (pe32.th32ProcessID != 0)
 				resultList.push_back(ProcessInfo(wxString(pe32.szExeFile), pe32.th32ProcessID));
-		} while (Process32Next(hProcessSnap, &pe32));
-
-		CloseHandle(hProcessSnap);
-		return resultList;
+		} while (Process32Next(hProcessSnap.get(), &pe32));
+		return move(resultList);
 	}
 
 	std::vector<wxString> ProcessManager::GetModulesForProcessId(int processID, DWORD& resultCode)
 	{
-		HANDLE process = OpenProcess(PROCESS_ALL_ACCESS, false, processID);
+		unique_handle process(OpenProcess(PROCESS_ALL_ACCESS, false, processID));
 		resultCode = ERROR_SUCCESS;
-		if (process == NULL)
+		if (process.get() == NULL)
 		{
 			resultCode = GetLastError();
 			return vector<wxString>();
 		}
 		
-		HMODULE modules[150];
+		HMODULE modules[250];
 		DWORD needed;
 		auto size = sizeof(modules);
-		if (!EnumProcessModulesEx(process, modules, sizeof(modules), &needed, LIST_MODULES_ALL))
+		if (!EnumProcessModulesEx(process.get(), modules, sizeof(modules), &needed, LIST_MODULES_ALL))
 		{
-			CloseHandle(process);
 			resultCode = GetLastError();
 			return vector<wxString>();
 		}
 		vector<wxString> test;
 
 		HMODULE* modulesSource;
-		unique_ptr<HMODULE> dynamicSource;
+		unique_ptr<HMODULE[]> dynamicSource;
 		if (needed > sizeof(modules))
 		{
-			dynamicSource = unique_ptr<HMODULE>( new HMODULE[needed / sizeof(HMODULE)]);
-			if (!EnumProcessModulesEx(process, dynamicSource.get(), needed, &needed, LIST_MODULES_ALL))
+			dynamicSource = unique_ptr<HMODULE[]>( new HMODULE[needed / sizeof(HMODULE)]);
+			if (!EnumProcessModulesEx(process.get(), dynamicSource.get(), needed, &needed, LIST_MODULES_ALL))
 			{
-				CloseHandle(process);
 				resultCode = GetLastError();
 				return vector<wxString>();
 			}
@@ -86,11 +83,11 @@ namespace Managers
 
 		for (int i = 0; i < arrivedLength; i++)
 		{
-			if (GetModuleFileNameEx(process, modulesSource[i], nameBuffer, sizeof(nameBuffer)))
+			if (GetModuleFileNameEx(process.get(), modulesSource[i], nameBuffer, sizeof(nameBuffer)))
 			{
 				test.push_back(nameBuffer);
 			}
 		}
-		return test;
+		return move(test);
 	}
 }

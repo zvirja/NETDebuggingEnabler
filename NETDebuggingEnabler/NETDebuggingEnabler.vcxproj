@@ -160,6 +160,7 @@
     <ClInclude Include="ProcessInfo.h" />
     <ClInclude Include="ProcessManager.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="unique_handle.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EntryPoint.cpp" />
@@ -168,6 +169,7 @@
     <ClCompile Include="PrivilegiesAdjuster.cpp" />
     <ClCompile Include="ProcessInfo.cpp" />
     <ClCompile Include="ProcessManager.cpp" />
+    <ClCompile Include="unique_handle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="NETDebuggingEnabler.rc" />
