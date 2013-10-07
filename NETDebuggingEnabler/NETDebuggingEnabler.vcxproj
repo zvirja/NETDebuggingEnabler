@@ -163,6 +163,7 @@
     <ClInclude Include="ModuleCheckListBoxItem.h" />
     <ClInclude Include="ModulesCheckListBox.h" />
     <ClInclude Include="NETDebuggingEnablerApp.h" />
+    <ClInclude Include="OptimizationController.h" />
     <ClInclude Include="PrivilegiesAdjuster.h" />
     <ClInclude Include="ProcessInfo.h" />
     <ClInclude Include="ProcessManager.h" />
@@ -179,6 +180,7 @@
     <ClCompile Include="MainFrame.cpp" />
     <ClCompile Include="ModulesCheckListBox.cpp" />
     <ClCompile Include="NETDebuggingEnablerApp.cpp" />
+    <ClCompile Include="OptimizationController.cpp" />
     <ClCompile Include="PrivilegiesAdjuster.cpp" />
     <ClCompile Include="ProcessInfo.cpp" />
     <ClCompile Include="ProcessManager.cpp" />

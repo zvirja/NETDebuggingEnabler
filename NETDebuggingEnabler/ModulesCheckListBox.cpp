@@ -6,6 +6,15 @@
 using namespace std;
 namespace Frames
 {
+	ModulesCheckListBox::ModulesCheckListBox(
+		wxWindow *parent, wxWindowID winid, const wxPoint& pos, 
+		const wxSize& size, const wxArrayString& choices, long style /*= 0*/, 
+		const wxValidator& 	validator /*= wxDefaultValidator*/, const wxString& name /*= wxListBoxNameStr*/) : 
+		wxCheckListBox(parent, winid, pos, size, choices, style, validator, name), displayFullPath(false), wildcardFilter()
+	{
+		this->modulesList = std::unique_ptr<std::vector<wxString>>(nullptr);
+		this->Bind(wxEVT_COMMAND_CHECKLISTBOX_TOGGLED, &ModulesCheckListBox::OnModuleCheckedChanged, this);
+	}
 
 	ModulesCheckListBox::~ModulesCheckListBox()
 	{
@@ -35,10 +44,16 @@ namespace Frames
 		if (filteredByPath.size() == 0)
 			return;
 
+		int counter = 0;
 		for (wxString& module : filteredByPath)
 		{
 			auto decoratedModuleName = this->ApplyFilenameOnlyDecoration(module);
-			this->Append(decoratedModuleName, new ModuleCheckListBoxItem(module));
+			auto clientData = new ModuleCheckListBoxItem(module);
+			this->Append(decoratedModuleName, clientData);
+		}
+		for (unsigned int i = 0; i < this->GetCount(); i++)
+		{
+			this->Check(i, static_cast<ModuleCheckListBoxItem*>(this->GetClientObject(i))->IsOptimizationDisabled());
 		}
 	}
 
@@ -58,5 +73,13 @@ namespace Frames
 				result.push_back(modulePath);
 		}
 		return result;
+	}
+
+	void ModulesCheckListBox::OnModuleCheckedChanged(wxCommandEvent& event)
+	{
+		unsigned int index = event.GetSelection();
+		auto item = static_cast<ModuleCheckListBoxItem*>(this->GetClientObject(index));
+		bool newValue = this->IsChecked(index);
+		item->OptimizationDisabled(newValue);
 	}
 }

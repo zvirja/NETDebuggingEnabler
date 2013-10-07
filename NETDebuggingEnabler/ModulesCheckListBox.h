@@ -2,6 +2,7 @@
 #include "baseset.h"
 #include <wx/wx.h>
 #include "WildcardFilter.h"
+#include "OptimizationController.h"
 
 namespace Frames
 {
@@ -14,12 +15,7 @@ namespace Frames
 			const wxArrayString& choices,
 			long style = 0,
 			const wxValidator& validator = wxDefaultValidator,
-			const wxString& name = wxListBoxNameStr) : wxCheckListBox(parent, winid, pos, size, choices, style, validator, name)
-		{
-			this->modulesList = std::unique_ptr<std::vector<wxString>>(nullptr);
-			this->displayFullPath = false;
-			this->wildcardFilter = WildcardFilter();
-		};
+			const wxString& name = wxListBoxNameStr);;
 		virtual ~ModulesCheckListBox();
 
 		void ReInitializeModules(const std::vector<wxString>& modules);
@@ -47,5 +43,7 @@ namespace Frames
 		wxString ModulesCheckListBox::ApplyFilenameOnlyDecoration(const wxString& modulePath);
 		std::vector<wxString> ApplyPathFilter(const std::vector < wxString> &modules);
 		wxFrame* GetParentFrame(){ return static_cast<wxFrame*>(this->m_parent); }
+
+		void OnModuleCheckedChanged(wxCommandEvent& event);
 	};
 }
