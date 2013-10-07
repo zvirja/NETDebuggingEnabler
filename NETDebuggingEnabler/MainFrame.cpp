@@ -46,7 +46,7 @@ namespace Frames
 		wxBoxSizer* bSizerProsesses;
 		bSizerProsesses = new wxBoxSizer(wxHORIZONTAL);
 
-		processesBox = new wxComboBox(this, ID_PROCESSLIST, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_READONLY | wxCB_SORT);
+		processesBox = new wxComboBox(this, ID_PROCESSLIST, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_READONLY );
 		bSizerProsesses->Add(processesBox, 1, wxALIGN_CENTER_VERTICAL | wxBOTTOM | wxEXPAND | wxLEFT | wxRIGHT, 5);
 
 		refreshButton = new wxButton(this, wxID_REFRESH, wxT("Refresh list"), wxDefaultPosition, wxDefaultSize, 0);
@@ -74,14 +74,13 @@ namespace Frames
 
 		bSizerModulesControl->Add(modulesFilterTextCtrl, 1, wxALIGN_CENTER_VERTICAL | wxBOTTOM | wxRIGHT | wxTOP, 5);
 
-
 		bSizerMainVert->Add(bSizerModulesControl, 0, wxEXPAND | wxLEFT | wxRIGHT, 5);
 
 		wxBoxSizer* bSizerModules;
 		bSizerModules = new wxBoxSizer(wxHORIZONTAL);
 
 		wxArrayString modulesListBoxChoices;
-		modulesListBox = new ModulesCheckListBox(this, ID_MODULESLISTBOX, wxDefaultPosition, wxDefaultSize, modulesListBoxChoices, wxLB_SORT);
+		modulesListBox = new ModulesCheckListBox(this, ID_MODULESLISTBOX, wxDefaultPosition, wxDefaultSize, modulesListBoxChoices, 0);
 		bSizerModules->Add(modulesListBox, 1, wxBOTTOM | wxEXPAND | wxLEFT | wxRIGHT, 5);
 
 
