@@ -169,6 +169,7 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="StatusTextStackUpdater.h" />
     <ClInclude Include="unique_handle.h" />
+    <ClInclude Include="WildcardFilter.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="baseset.cpp">
@@ -182,6 +183,7 @@
     <ClCompile Include="ProcessInfo.cpp" />
     <ClCompile Include="ProcessManager.cpp" />
     <ClCompile Include="unique_handle.cpp" />
+    <ClCompile Include="WildcardFilter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="NETDebuggingEnabler.rc" />

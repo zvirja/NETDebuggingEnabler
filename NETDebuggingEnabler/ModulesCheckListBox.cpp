@@ -51,16 +51,10 @@ namespace Frames
 	}
 	std::vector<wxString> ModulesCheckListBox::ApplyPathFilter(const std::vector < wxString> &modules)
 	{
-		if (this->pathFilter == wxEmptyString)
-			return modules;
-		wxString filter = this->pathFilter;
-		filter.Trim().MakeUpper();
-		if (filter.length() == 0)
-			return modules;
 		vector<wxString> result;
 		for (auto& modulePath : modules)
 		{
-			if (modulePath.Upper().StartsWith(filter))
+			if (wildcardFilter.MatchFilter(modulePath))
 				result.push_back(modulePath);
 		}
 		return result;

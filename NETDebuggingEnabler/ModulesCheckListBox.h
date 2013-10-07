@@ -1,10 +1,10 @@
 #pragma once
 #include "baseset.h"
 #include <wx/wx.h>
+#include "WildcardFilter.h"
 
 namespace Frames
 {
-
 	class ModulesCheckListBox : public wxCheckListBox
 	{
 	public:
@@ -18,7 +18,7 @@ namespace Frames
 		{
 			this->modulesList = std::unique_ptr<std::vector<wxString>>(nullptr);
 			this->displayFullPath = false;
-			this->pathFilter = wxEmptyString;
+			this->wildcardFilter = WildcardFilter();
 		};
 		virtual ~ModulesCheckListBox();
 
@@ -33,17 +33,16 @@ namespace Frames
 			RefreshModules();
 		}
 
-		wxString& GetPathFilter() { return pathFilter; }
 		void SetPathFilter(const wxString& value)
 		{
-			pathFilter = value;
+			wildcardFilter.SetFilter(value);
 			RefreshModules();
 		}
 
 	private:
 		std::unique_ptr<std::vector<wxString>> modulesList;
 		bool displayFullPath;
-		wxString pathFilter;
+		WildcardFilter wildcardFilter;
 
 		wxString ModulesCheckListBox::ApplyFilenameOnlyDecoration(const wxString& modulePath);
 		std::vector<wxString> ApplyPathFilter(const std::vector < wxString> &modules);

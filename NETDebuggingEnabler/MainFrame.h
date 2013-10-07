@@ -14,6 +14,7 @@ namespace Frames
 #define ID_MODULES_DISPLAYFULLPATHBOX wxID_HIGHEST+5
 #define ID_MODULES_APPLYPATHFILTERBOX wxID_HIGHEST+6
 #define ID_MODULES_FILTERTEXT wxID_HIGHEST+7
+#define ID_MODULES_REFRESHBUTTON wxID_HIGHEST+8
 
 
 
@@ -33,6 +34,8 @@ namespace Frames
 		wxCheckBox* modulesFilterPathCheckBox;
 		wxTextCtrl* modulesFilterTextCtrl;
 		ModulesCheckListBox* modulesListBox;
+		wxButton* modulesRefreshButton;
+		wxStaticLine* m_staticline1;
 
 		std::unique_ptr<Managers::ProcessManager> processManager;
 
@@ -52,5 +55,6 @@ namespace Frames
 		void OnDisplayFullPathChanged(wxCommandEvent& event);
 		void OnModulePathFilterEnabledChanged(wxCommandEvent& event);
 		void OnModulePathFilterTextChanged(wxCommandEvent& event);
+		void OnModulesReload(wxCommandEvent& event);
 	};
 }

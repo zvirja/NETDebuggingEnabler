@@ -63,6 +63,9 @@
     <ClInclude Include="ModulesCheckListBox.h">
       <Filter>Header Files\MyUI\ModuleCheckListBox</Filter>
     </ClInclude>
+    <ClInclude Include="WildcardFilter.h">
+      <Filter>Header Files\MyUI\ModuleCheckListBox</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="NETDebuggingEnablerApp.cpp">
@@ -90,6 +93,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ModulesCheckListBox.cpp">
+      <Filter>Source Files\Frames</Filter>
+    </ClCompile>
+    <ClCompile Include="WildcardFilter.cpp">
       <Filter>Source Files\Frames</Filter>
     </ClCompile>
   </ItemGroup>

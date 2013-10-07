@@ -46,7 +46,7 @@ namespace Frames
 		wxBoxSizer* bSizerProsesses;
 		bSizerProsesses = new wxBoxSizer(wxHORIZONTAL);
 
-		processesBox = new wxComboBox(this, ID_PROCESSLIST, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_READONLY );
+		processesBox = new wxComboBox(this, ID_PROCESSLIST, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_READONLY | wxCB_SORT);
 		bSizerProsesses->Add(processesBox, 1, wxALIGN_CENTER_VERTICAL | wxBOTTOM | wxEXPAND | wxLEFT | wxRIGHT, 5);
 
 		refreshButton = new wxButton(this, wxID_REFRESH, wxT("Refresh list"), wxDefaultPosition, wxDefaultSize, 0);
@@ -55,11 +55,16 @@ namespace Frames
 
 		bSizerMainVert->Add(bSizerProsesses, 0, wxEXPAND | wxLEFT | wxRIGHT, 5);
 
-		auto m_staticline1 = new wxStaticLine(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL);
+		m_staticline1 = new wxStaticLine(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL);
 		bSizerMainVert->Add(m_staticline1, 0, wxEXPAND | wxLEFT | wxRIGHT, 10);
 
 		wxBoxSizer* bSizerModulesControl;
 		bSizerModulesControl = new wxBoxSizer(wxHORIZONTAL);
+
+		modulesRefreshButton = new wxButton(this, ID_MODULES_REFRESHBUTTON, wxT("RM"), wxDefaultPosition, wxSize(30, -1), 0);
+		modulesRefreshButton->SetToolTip(wxT("Reload modules"));
+
+		bSizerModulesControl->Add(modulesRefreshButton, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, 5);
 
 		mudulesFullPathCheckBox = new wxCheckBox(this, ID_MODULES_DISPLAYFULLPATHBOX, wxT("Full paths"), wxDefaultPosition, wxDefaultSize, 0);
 		mudulesFullPathCheckBox->SetToolTip(wxT("Display full paths"));
@@ -71,8 +76,10 @@ namespace Frames
 
 		modulesFilterTextCtrl = new wxTextCtrl(this, ID_MODULES_FILTERTEXT, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0);
 		modulesFilterTextCtrl->Enable(false);
+		modulesFilterTextCtrl->SetToolTip(wxT("Wildcard support: startsWith*,*endsWith,*contains*\nIf no wildcard present, check if starts with filter value."));
 
 		bSizerModulesControl->Add(modulesFilterTextCtrl, 1, wxALIGN_CENTER_VERTICAL | wxBOTTOM | wxRIGHT | wxTOP, 5);
+
 
 		bSizerMainVert->Add(bSizerModulesControl, 0, wxEXPAND | wxLEFT | wxRIGHT, 5);
 
@@ -80,12 +87,12 @@ namespace Frames
 		bSizerModules = new wxBoxSizer(wxHORIZONTAL);
 
 		wxArrayString modulesListBoxChoices;
-		modulesListBox = new ModulesCheckListBox(this, ID_MODULESLISTBOX, wxDefaultPosition, wxDefaultSize, modulesListBoxChoices, 0);
+		modulesListBox = new ModulesCheckListBox(this, ID_MODULESLISTBOX, wxDefaultPosition, wxDefaultSize, modulesListBoxChoices, wxLB_SORT);
+
 		bSizerModules->Add(modulesListBox, 1, wxBOTTOM | wxEXPAND | wxLEFT | wxRIGHT, 5);
 
 
 		bSizerMainVert->Add(bSizerModules, 1, wxBOTTOM | wxEXPAND | wxLEFT | wxRIGHT, 5);
-
 
 		this->SetSizer(bSizerMainVert);
 		this->Layout();
@@ -168,6 +175,7 @@ namespace Frames
 		EVT_CHECKBOX(ID_MODULES_DISPLAYFULLPATHBOX, MainFrame::OnDisplayFullPathChanged)
 		EVT_CHECKBOX(ID_MODULES_APPLYPATHFILTERBOX, MainFrame::OnModulePathFilterEnabledChanged)
 		EVT_TEXT(ID_MODULES_FILTERTEXT, MainFrame::OnModulePathFilterTextChanged)
+		EVT_BUTTON(ID_MODULES_REFRESHBUTTON, MainFrame::OnModulesReload)
 	END_EVENT_TABLE()
 
 	void MainFrame::OnRefresh(wxCommandEvent& event)
@@ -217,6 +225,16 @@ namespace Frames
 	void MainFrame::OnModulePathFilterTextChanged(wxCommandEvent& event)
 	{
 		this->modulesListBox->SetPathFilter(this->modulesFilterTextCtrl->GetValue());
+	}
+
+	void MainFrame::OnModulesReload(wxCommandEvent& event)
+	{
+		auto selectedId = processesBox->GetCurrentSelection();
+		if (selectedId < 0)
+			return;
+		auto procInfo = static_cast<ProcessInfo*>(processesBox->GetClientObject(selectedId));
+		if (procInfo != nullptr)
+			this->UpdateModulesForProcessInfo(*procInfo);
 	}
 
 }
