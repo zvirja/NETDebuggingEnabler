@@ -37,7 +37,7 @@ namespace Frames
 		filterCheckBox->SetValue(true);
 		bSizerFilter->Add(filterCheckBox, 0, wxALIGN_CENTER_VERTICAL | wxBOTTOM | wxLEFT | wxTOP, 5);
 
-		filterTextBox = new wxTextCtrl(this, ID_PROCESSFILTERTEXT, wxT("chrome.exe"), wxDefaultPosition, wxSize(205, -1), 0);
+		filterTextBox = new wxTextCtrl(this, ID_PROCESSFILTERTEXT, wxEmptyString, wxDefaultPosition, wxSize(205, -1), 0);
 		bSizerFilter->Add(filterTextBox, 0, wxALIGN_CENTER_VERTICAL | wxBOTTOM | wxRIGHT | wxTOP, 5);
 
 
@@ -74,7 +74,7 @@ namespace Frames
 		modulesFilterPathCheckBox = new wxCheckBox(this, ID_MODULES_APPLYPATHFILTERBOX, wxT("Path filter:"), wxDefaultPosition, wxDefaultSize, 0);
 		bSizerModulesControl->Add(modulesFilterPathCheckBox, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, 10);
 
-		modulesFilterTextCtrl = new wxTextCtrl(this, ID_MODULES_FILTERTEXT, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0);
+		modulesFilterTextCtrl = new wxTextCtrl(this, ID_MODULES_FILTERTEXT, wxT("*ASP.NET*"), wxDefaultPosition, wxDefaultSize, 0);
 		modulesFilterTextCtrl->Enable(false);
 		modulesFilterTextCtrl->SetToolTip(wxT("Wildcard support: startsWith*,*endsWith,*contains*\nIf no wildcard present, check if starts with filter value."));
 
