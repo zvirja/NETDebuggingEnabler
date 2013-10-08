@@ -35,7 +35,7 @@ namespace Frames
 
 	void ModulesCheckListBox::RefreshModules()
 	{
-		StatusTextStackUpdater statusUpdater(GetParentFrame(), L"Updating modules list");
+		StatusTextStackUpdater statusUpdater(GetParentFrame(), L"Updating modules list...");
 		wxWindowUpdateLocker uiLocker(this);
 		this->Clear();
 		if (modulesList.get() == nullptr)

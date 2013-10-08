@@ -72,10 +72,11 @@ namespace Managers
 		return move(resultList);
 	}
 
-	std::vector<wxString> ProcessManager::GetModulesForProcessId(int processID, DWORD& resultCode)
+	std::vector<wxString> ProcessManager::GetModulesForProcessId(int processID, DWORD& resultCode, bool skipMappings)
 	{
 		auto result = GetModulesForProcessIdInternalV1(processID, resultCode);
-		AppendMemoryMappedFiles(processID, result);
+		if (!skipMappings)
+			AppendMemoryMappedFiles(processID, result);
 		vector<wxString> vectorResult;
 		for (auto& modulePath : result)
 			vectorResult.push_back(modulePath);

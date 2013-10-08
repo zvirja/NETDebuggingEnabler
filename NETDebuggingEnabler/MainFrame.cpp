@@ -21,7 +21,7 @@ namespace Frames
 		this->Centre(wxBOTH);
 		this->SetBackgroundColour(wxColour(L"LightGray"));
 		this->SetStatusBar(new wxStatusBar(this));
-		this->SetStatusText("Ready");
+		this->SetStatusText(L"Ready");
 		RefreshProcessList();
 	}
 
@@ -33,15 +33,21 @@ namespace Frames
 		wxBoxSizer* bSizerFilter;
 		bSizerFilter = new wxBoxSizer(wxHORIZONTAL);
 
+		onlyNETBox = new wxCheckBox(this, ID_PROCESSLIST_ONLYNETBOX, wxT("Only .NET"), wxDefaultPosition, wxDefaultSize, 0);
+		onlyNETBox->SetToolTip(wxT("Specifies to display only .NET processes."));
+
+		bSizerFilter->Add(onlyNETBox, 0, wxALIGN_CENTER_VERTICAL | wxBOTTOM | wxLEFT | wxTOP, 5);
+
 		filterCheckBox = new wxCheckBox(this, ID_PROCESSFILTERBOX, wxT("Process name filter:"), wxDefaultPosition, wxDefaultSize, 0);
-		filterCheckBox->SetValue(true);
 		bSizerFilter->Add(filterCheckBox, 0, wxALIGN_CENTER_VERTICAL | wxBOTTOM | wxLEFT | wxTOP, 5);
 
-		filterTextBox = new wxTextCtrl(this, ID_PROCESSFILTERTEXT, wxEmptyString, wxDefaultPosition, wxSize(205, -1), 0);
-		bSizerFilter->Add(filterTextBox, 0, wxALIGN_CENTER_VERTICAL | wxBOTTOM | wxRIGHT | wxTOP, 5);
+		filterTextBox = new wxTextCtrl(this, ID_PROCESSFILTERTEXT, wxT("w3wp"), wxDefaultPosition, wxSize(205, -1), 0);
+		filterTextBox->Enable(false);
+
+		bSizerFilter->Add(filterTextBox, 1, wxALIGN_CENTER_VERTICAL | wxBOTTOM | wxRIGHT | wxTOP, 5);
 
 
-		bSizerMainVert->Add(bSizerFilter, 0, wxLEFT | wxRIGHT | wxTOP, 5);
+		bSizerMainVert->Add(bSizerFilter, 0, wxEXPAND | wxLEFT | wxRIGHT | wxTOP, 5);
 
 		wxBoxSizer* bSizerProsesses;
 		bSizerProsesses = new wxBoxSizer(wxHORIZONTAL);
@@ -88,7 +94,6 @@ namespace Frames
 
 		wxArrayString modulesListBoxChoices;
 		modulesListBox = new ModulesCheckListBox(this, ID_MODULESLISTBOX, wxDefaultPosition, wxDefaultSize, modulesListBoxChoices, wxLB_SORT);
-
 		bSizerModules->Add(modulesListBox, 1, wxBOTTOM | wxEXPAND | wxLEFT | wxRIGHT, 5);
 
 
@@ -113,7 +118,7 @@ namespace Frames
 		{
 			return;
 		}
-		processItems = FilterProcesses(processItems);
+		processItems = FilterOnlyNETProcesses(FilterProcesses(processItems));
 		for (auto iterator = processItems.begin(); iterator != processItems.end(); iterator++)
 		{
 			ProcessInfo& info = *iterator;
@@ -142,8 +147,30 @@ namespace Frames
 		return move(result);
 	}
 
+	vector<ProcessInfo> MainFrame::FilterOnlyNETProcesses(const vector < ProcessInfo >& processes)
+	{
+		if (!onlyNETBox->IsChecked())
+			return processes;
+		vector<ProcessInfo> result;
+		DWORD resultDW;
+		for (auto& process : processes)
+		{
+			vector<wxString> modulesForProc = processManager->GetModulesForProcessId(process.GetID(), resultDW, true);
+			for (auto& modulePath : modulesForProc)
+			{
+				if (modulePath.Upper().Contains(L"MICROSOFT.NET\\FRAMEWORK"))
+				{
+					result.push_back(process);
+					break;;
+				}
+			}
+		}
+		return move(result);
+	}
+
 	void MainFrame::UpdateModulesForProcessInfo(const Frames::ProcessInfo& processInfo)
 	{
+		StatusTextStackUpdater statusUpdater(this, L"Updating modules list...");
 		DWORD result = 0;
 		vector<wxString> modules = processManager->GetModulesForProcessId(processInfo.GetID(), result);
 		if (result != ERROR_SUCCESS)
@@ -170,6 +197,7 @@ namespace Frames
 	BEGIN_EVENT_TABLE(MainFrame, wxFrame)
 		EVT_BUTTON(wxID_REFRESH, MainFrame::OnRefresh)
 		EVT_COMBOBOX(ID_PROCESSLIST, MainFrame::OnProcessSelected)
+		EVT_CHECKBOX(ID_PROCESSLIST_ONLYNETBOX, MainFrame::OnOnlyNETChanged)
 		EVT_CHECKBOX(ID_PROCESSFILTERBOX, MainFrame::OnFilterEnabledChanged)
 		EVT_TEXT(ID_PROCESSFILTERTEXT, MainFrame::OnFilterTextChanged)
 		EVT_CHECKBOX(ID_MODULES_DISPLAYFULLPATHBOX, MainFrame::OnDisplayFullPathChanged)
@@ -196,6 +224,12 @@ namespace Frames
 	}
 
 	void MainFrame::OnFilterTextChanged(wxCommandEvent& event)
+	{
+		OnRefresh(event);
+	}
+
+
+	void MainFrame::OnOnlyNETChanged(wxCommandEvent& event)
 	{
 		OnRefresh(event);
 	}

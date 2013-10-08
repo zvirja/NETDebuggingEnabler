@@ -15,10 +15,10 @@ namespace Managers
 	};
 
 	BOOL CALLBACK EnumerateLoadedModulesProc64ProcManager(
-    _In_ PCWSTR ModuleName,
-    _In_ DWORD64 ModuleBase,
-    _In_ ULONG ModuleSize,
-    _In_opt_ PVOID UserContext
+		_In_ PCWSTR ModuleName,
+		_In_ DWORD64 ModuleBase,
+		_In_ ULONG ModuleSize,
+		_In_opt_ PVOID UserContext
 		);
 
 	BOOL SetPrivilege(
@@ -34,7 +34,7 @@ namespace Managers
 		ProcessManager();
 		~ProcessManager();
 		std::vector<Frames::ProcessInfo> GetProcessesList();
-		std::vector<wxString> GetModulesForProcessId(int processID, DWORD& resultCode);
+		std::vector<wxString> GetModulesForProcessId(int processID, DWORD& resultCode, bool skipMappings = false);
 	private:
 		std::map<wxString, wxString> DriveMappings;
 		std::set<wxString, wxStringOrdinalComparator> GetModulesForProcessIdInternalV1(int processID, DWORD& resultCode);

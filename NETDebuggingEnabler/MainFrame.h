@@ -15,6 +15,7 @@ namespace Frames
 #define ID_MODULES_APPLYPATHFILTERBOX wxID_HIGHEST+6
 #define ID_MODULES_FILTERTEXT wxID_HIGHEST+7
 #define ID_MODULES_REFRESHBUTTON wxID_HIGHEST+8
+#define ID_PROCESSLIST_ONLYNETBOX wxID_HIGHEST+9
 
 
 
@@ -26,6 +27,7 @@ namespace Frames
 	private:
 		static const int FrameWidth = 350;
 		static const int FrameHeight = 500;
+		wxCheckBox* onlyNETBox;
 		wxCheckBox* filterCheckBox;
 		wxTextCtrl* filterTextBox;
 		wxComboBox* processesBox;
@@ -42,6 +44,7 @@ namespace Frames
 		void BuildLayout();
 		void RefreshProcessList();
 		std::vector<ProcessInfo> FilterProcesses(const std::vector < Frames::ProcessInfo >& processes);
+		std::vector<ProcessInfo> FilterOnlyNETProcesses(const std::vector < Frames::ProcessInfo >& processes);
 		void FillModulesForProcess(const std::vector<wxString>& modules);
 		void UpdateModulesForProcessInfo(const Frames::ProcessInfo& processInfo);
 
@@ -49,6 +52,7 @@ namespace Frames
 		DECLARE_EVENT_TABLE();
 		void OnRefresh(wxCommandEvent& event);
 		void OnProcessSelected(wxCommandEvent& event);
+		void OnOnlyNETChanged(wxCommandEvent& event);
 		void OnFilterEnabledChanged(wxCommandEvent& event);
 		void OnFilterTextChanged(wxCommandEvent& event);
 
