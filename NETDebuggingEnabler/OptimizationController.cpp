@@ -30,7 +30,10 @@ namespace Managers
 	bool OptimizationController::IsOptimizationDisabledForAssembly(const wxString& assemblyPath)
 	{
 		wxString iniFilePath = GetIniPathFromAssemblyPath(assemblyPath);
-		return wxFile::Exists(iniFilePath);
+		if (!wxFile::Exists(iniFilePath))
+			return false;
+		auto size = wxFileName::GetSize(iniFilePath);
+		return size == 75;
 	}
 
 	wxString OptimizationController::GetIniPathFromAssemblyPath(const wxString& assemblyPath)
