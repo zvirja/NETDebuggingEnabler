@@ -111,10 +111,10 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="E:\TemporaryFolder\Bug.ico">
+    <Image Include="Icons\Bug.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="E:\TemporaryFolder\Bug2.ico">
+    <Image Include="Icons\Bug2.ico">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
