@@ -69,6 +69,9 @@
     <ClInclude Include="OptimizationController.h">
       <Filter>Header Files\Managers</Filter>
     </ClInclude>
+    <ClInclude Include="Configuration.h">
+      <Filter>Header Files\Managers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="NETDebuggingEnablerApp.cpp">
@@ -102,6 +105,9 @@
       <Filter>Source Files\Frames</Filter>
     </ClCompile>
     <ClCompile Include="OptimizationController.cpp">
+      <Filter>Source Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Configuration.cpp">
       <Filter>Source Files\Managers</Filter>
     </ClCompile>
   </ItemGroup>

@@ -5,6 +5,8 @@
 using namespace Frames;
 using namespace Managers;
 
+Managers::Configuration* NETDebuggingEnablerApp::AppConfig = new Managers::Configuration();
+
 NETDebuggingEnablerApp::NETDebuggingEnablerApp()
 {
 	
@@ -22,7 +24,10 @@ bool NETDebuggingEnablerApp::OnInit()
 	{
 		return false;
 	}
+
 	MainFrame* mainFrame = new MainFrame;
 	mainFrame->Show(true);
 	return true;
+
+
 }
