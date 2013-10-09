@@ -27,12 +27,13 @@ namespace Frames
 	private:
 		static const int FrameWidth = 350;
 		static const int FrameHeight = 500;
+		bool isReady = false;
 		wxCheckBox* onlyNETBox;
-		wxCheckBox* filterCheckBox;
-		wxTextCtrl* filterTextBox;
+		wxCheckBox* processNameFilterCheckBox;
+		wxTextCtrl* processNameFilterTextBox;
 		wxComboBox* processesBox;
 		wxButton* refreshButton;
-		wxCheckBox* mudulesFullPathCheckBox;
+		wxCheckBox* modulesFullPathCheckBox;
 		wxCheckBox* modulesFilterPathCheckBox;
 		wxTextCtrl* modulesFilterTextCtrl;
 		ModulesCheckListBox* modulesListBox;
@@ -47,14 +48,15 @@ namespace Frames
 		std::vector<ProcessInfo> FilterOnlyNETProcesses(const std::vector < Frames::ProcessInfo >& processes);
 		void FillModulesForProcess(const std::vector<wxString>& modules);
 		void UpdateModulesForProcessInfo(const Frames::ProcessInfo& processInfo);
+		void RestoreValuesFromConfig();
 
 
 		DECLARE_EVENT_TABLE();
 		void OnRefresh(wxCommandEvent& event);
 		void OnProcessSelected(wxCommandEvent& event);
 		void OnOnlyNETChanged(wxCommandEvent& event);
-		void OnFilterEnabledChanged(wxCommandEvent& event);
-		void OnFilterTextChanged(wxCommandEvent& event);
+		void OnProcessNameFilterEnabledChanged(wxCommandEvent& event);
+		void OnProcessNameFilterTextChanged(wxCommandEvent& event);
 
 		void OnDisplayFullPathChanged(wxCommandEvent& event);
 		void OnModulePathFilterEnabledChanged(wxCommandEvent& event);

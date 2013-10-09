@@ -1,5 +1,6 @@
 #include "baseset.h"
 #include "MainFrame.h"
+#include "NETDebuggingEnablerApp.h"
 
 using namespace std;
 using namespace Managers;
@@ -14,7 +15,7 @@ namespace Frames
 
 		//Frame Initialization
 
-		SetIcon(wxICON(BUGICON2)); 
+		SetIcon(wxICON(BUGICON2));
 
 		this->SetSizeHints(FrameWidth, FrameHeight);
 		this->BuildLayout();
@@ -22,7 +23,12 @@ namespace Frames
 		this->SetBackgroundColour(wxColour(L"LightGray"));
 		this->SetStatusBar(new wxStatusBar(this));
 		this->SetStatusText(L"Ready");
+
+		RestoreValuesFromConfig();
+		isReady = true;
 		RefreshProcessList();
+
+		processesBox->SetFocus();
 	}
 
 	void MainFrame::BuildLayout()
@@ -34,17 +40,18 @@ namespace Frames
 		bSizerFilter = new wxBoxSizer(wxHORIZONTAL);
 
 		onlyNETBox = new wxCheckBox(this, ID_PROCESSLIST_ONLYNETBOX, wxT("Only .NET"), wxDefaultPosition, wxDefaultSize, 0);
-		onlyNETBox->SetToolTip(wxT("Specifies to display only .NET processes."));
+		onlyNETBox->SetToolTip(wxT("Specifies to display only .NET related processes.\nProcess is considered as .NET related if it refers to the Microsoft.NET\\Framework* stuff.\nIT'S RELATIVELY SLOW AND EXPENSIVE, so state isn't saved across sessions to not slow startup."));
 
 		bSizerFilter->Add(onlyNETBox, 0, wxALIGN_CENTER_VERTICAL | wxBOTTOM | wxLEFT | wxTOP, 5);
 
-		filterCheckBox = new wxCheckBox(this, ID_PROCESSFILTERBOX, wxT("Process name filter:"), wxDefaultPosition, wxDefaultSize, 0);
-		bSizerFilter->Add(filterCheckBox, 0, wxALIGN_CENTER_VERTICAL | wxBOTTOM | wxLEFT | wxTOP, 5);
+		processNameFilterCheckBox = new wxCheckBox(this, ID_PROCESSFILTERBOX, wxT("Name filter:"), wxDefaultPosition, wxDefaultSize, 0);
+		bSizerFilter->Add(processNameFilterCheckBox, 0, wxALIGN_CENTER_VERTICAL | wxBOTTOM | wxLEFT | wxTOP, 5);
 
-		filterTextBox = new wxTextCtrl(this, ID_PROCESSFILTERTEXT, wxT("w3wp"), wxDefaultPosition, wxSize(205, -1), 0);
-		filterTextBox->Enable(false);
+		processNameFilterTextBox = new wxTextCtrl(this, ID_PROCESSFILTERTEXT, wxEmptyString, wxDefaultPosition, wxSize(205, -1), 0);
+		processNameFilterTextBox->Enable(false);
+		processNameFilterTextBox->SetToolTip(wxT("Value is used as *contains* filter."));
 
-		bSizerFilter->Add(filterTextBox, 1, wxALIGN_CENTER_VERTICAL | wxBOTTOM | wxRIGHT | wxTOP, 5);
+		bSizerFilter->Add(processNameFilterTextBox, 1, wxALIGN_CENTER_VERTICAL | wxBOTTOM | wxRIGHT | wxTOP, 5);
 
 
 		bSizerMainVert->Add(bSizerFilter, 0, wxEXPAND | wxLEFT | wxRIGHT | wxTOP, 5);
@@ -72,15 +79,15 @@ namespace Frames
 
 		bSizerModulesControl->Add(modulesRefreshButton, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, 5);
 
-		mudulesFullPathCheckBox = new wxCheckBox(this, ID_MODULES_DISPLAYFULLPATHBOX, wxT("Full paths"), wxDefaultPosition, wxDefaultSize, 0);
-		mudulesFullPathCheckBox->SetToolTip(wxT("Display full paths"));
+		modulesFullPathCheckBox = new wxCheckBox(this, ID_MODULES_DISPLAYFULLPATHBOX, wxT("Full paths"), wxDefaultPosition, wxDefaultSize, 0);
+		modulesFullPathCheckBox->SetToolTip(wxT("Display full paths"));
 
-		bSizerModulesControl->Add(mudulesFullPathCheckBox, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, 5);
+		bSizerModulesControl->Add(modulesFullPathCheckBox, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, 5);
 
 		modulesFilterPathCheckBox = new wxCheckBox(this, ID_MODULES_APPLYPATHFILTERBOX, wxT("Path filter:"), wxDefaultPosition, wxDefaultSize, 0);
 		bSizerModulesControl->Add(modulesFilterPathCheckBox, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, 10);
 
-		modulesFilterTextCtrl = new wxTextCtrl(this, ID_MODULES_FILTERTEXT, wxT("*ASP.NET*"), wxDefaultPosition, wxDefaultSize, 0);
+		modulesFilterTextCtrl = new wxTextCtrl(this, ID_MODULES_FILTERTEXT, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0);
 		modulesFilterTextCtrl->Enable(false);
 		modulesFilterTextCtrl->SetToolTip(wxT("Wildcard support: startsWith*,*endsWith,*contains*\nIf no wildcard present, check if starts with filter value."));
 
@@ -106,6 +113,27 @@ namespace Frames
 	MainFrame::~MainFrame()
 	{
 	}
+
+
+	void MainFrame::RestoreValuesFromConfig()
+	{
+		Configuration* appConfig = NETDebuggingEnablerApp::AppConfig;
+		//Don't enable it for performance reason
+		//onlyNETBox->SetValue(appConfig->GetOnlyNetProcesses());
+		processNameFilterCheckBox->SetValue(appConfig->GetEnableProcessNameFilter());
+		processNameFilterTextBox->Enable(processNameFilterCheckBox->IsChecked());
+		processNameFilterTextBox->SetValue(appConfig->GetProcessNameFilter());
+
+
+		modulesFullPathCheckBox->SetValue(appConfig->GetDisplayFullModulePaths());
+		modulesFilterTextCtrl->SetValue(appConfig->GetModulePathFilter());
+		modulesFilterPathCheckBox->SetValue(appConfig->GetEnableModulePathFilter());
+		modulesFilterTextCtrl->Enable(modulesFilterPathCheckBox->IsChecked());
+
+		modulesListBox->SetPathFilter(modulesFilterPathCheckBox->IsChecked() ? appConfig->GetModulePathFilter() : wxEmptyString);
+		modulesListBox->SetDispayFullPath(modulesFullPathCheckBox->IsChecked());
+	}
+
 
 	void MainFrame::RefreshProcessList()
 	{
@@ -135,9 +163,9 @@ namespace Frames
 
 	vector<ProcessInfo> MainFrame::FilterProcesses(const vector < ProcessInfo >& processes)
 	{
-		if (!filterCheckBox->IsChecked())
+		if (!processNameFilterCheckBox->IsChecked())
 			return processes;
-		auto textToFilter = filterTextBox->GetValue().Upper();
+		auto textToFilter = processNameFilterTextBox->GetValue().Upper();
 		vector<ProcessInfo> result;
 		for (auto& process : processes)
 		{
@@ -198,16 +226,19 @@ namespace Frames
 		EVT_BUTTON(wxID_REFRESH, MainFrame::OnRefresh)
 		EVT_COMBOBOX(ID_PROCESSLIST, MainFrame::OnProcessSelected)
 		EVT_CHECKBOX(ID_PROCESSLIST_ONLYNETBOX, MainFrame::OnOnlyNETChanged)
-		EVT_CHECKBOX(ID_PROCESSFILTERBOX, MainFrame::OnFilterEnabledChanged)
-		EVT_TEXT(ID_PROCESSFILTERTEXT, MainFrame::OnFilterTextChanged)
+		EVT_CHECKBOX(ID_PROCESSFILTERBOX, MainFrame::OnProcessNameFilterEnabledChanged)
+		EVT_TEXT(ID_PROCESSFILTERTEXT, MainFrame::OnProcessNameFilterTextChanged)
 		EVT_CHECKBOX(ID_MODULES_DISPLAYFULLPATHBOX, MainFrame::OnDisplayFullPathChanged)
 		EVT_CHECKBOX(ID_MODULES_APPLYPATHFILTERBOX, MainFrame::OnModulePathFilterEnabledChanged)
 		EVT_TEXT(ID_MODULES_FILTERTEXT, MainFrame::OnModulePathFilterTextChanged)
 		EVT_BUTTON(ID_MODULES_REFRESHBUTTON, MainFrame::OnModulesReload)
-	END_EVENT_TABLE()
+		END_EVENT_TABLE()
+
 
 	void MainFrame::OnRefresh(wxCommandEvent& event)
 	{
+		if (!isReady)
+			return;
 		RefreshProcessList();
 	}
 
@@ -217,27 +248,32 @@ namespace Frames
 		UpdateModulesForProcessInfo(*obj);
 	}
 
-	void MainFrame::OnFilterEnabledChanged(wxCommandEvent& event)
+	void MainFrame::OnProcessNameFilterEnabledChanged(wxCommandEvent& event)
 	{
 		OnRefresh(event);
-		filterTextBox->Enable(filterCheckBox->IsChecked());
+		processNameFilterTextBox->Enable(processNameFilterCheckBox->IsChecked());
+		NETDebuggingEnablerApp::AppConfig->SetEnableProcessNameFilter(processNameFilterCheckBox->IsChecked());
 	}
 
-	void MainFrame::OnFilterTextChanged(wxCommandEvent& event)
+	void MainFrame::OnProcessNameFilterTextChanged(wxCommandEvent& event)
 	{
 		OnRefresh(event);
+		NETDebuggingEnablerApp::AppConfig->SetProcessNameFilter(processNameFilterTextBox->GetValue());
 	}
 
 
 	void MainFrame::OnOnlyNETChanged(wxCommandEvent& event)
 	{
 		OnRefresh(event);
+		//Isn't used
+		//NETDebuggingEnablerApp::AppConfig->SetOnlyNetProcesses(onlyNETBox->IsChecked());
 	}
 
 	void MainFrame::OnDisplayFullPathChanged(wxCommandEvent& event)
 	{
 		auto displayFullPathBox = static_cast<wxCheckBox*>(event.GetEventObject());
 		this->modulesListBox->SetDispayFullPath(displayFullPathBox->IsChecked());
+		NETDebuggingEnablerApp::AppConfig->SetDisplayFullModulePaths(displayFullPathBox->IsChecked());
 	}
 
 	void MainFrame::OnModulePathFilterEnabledChanged(wxCommandEvent& event)
@@ -252,13 +288,14 @@ namespace Frames
 		{
 			this->modulesListBox->SetPathFilter(wxEmptyString);
 			this->modulesFilterTextCtrl->Enable(false);
-
 		}
+		NETDebuggingEnablerApp::AppConfig->SetEnableModulePathFilter(enablePathFilter->IsChecked());
 	}
 
 	void MainFrame::OnModulePathFilterTextChanged(wxCommandEvent& event)
 	{
 		this->modulesListBox->SetPathFilter(this->modulesFilterTextCtrl->GetValue());
+		NETDebuggingEnablerApp::AppConfig->SetModulePathFilter(modulesFilterTextCtrl->GetValue());
 	}
 
 	void MainFrame::OnModulesReload(wxCommandEvent& event)
