@@ -10,7 +10,7 @@ namespace Frames
 		wxWindow *parent, wxWindowID winid, const wxPoint& pos, 
 		const wxSize& size, const wxArrayString& choices, long style /*= 0*/, 
 		const wxValidator& 	validator /*= wxDefaultValidator*/, const wxString& name /*= wxListBoxNameStr*/) : 
-		wxCheckListBox(parent, winid, pos, size, choices, style, validator, name), displayFullPath(false), wildcardFilter()
+		wxCheckListBox(parent, winid, pos, size, choices, style, validator, name), displayFullPath(false), wildcardFilters()
 	{
 		this->modulesList = std::unique_ptr<std::vector<wxString>>(nullptr);
 		this->Bind(wxEVT_COMMAND_CHECKLISTBOX_TOGGLED, &ModulesCheckListBox::OnModuleCheckedChanged, this);
@@ -57,6 +57,33 @@ namespace Frames
 		}
 	}
 
+
+	void ModulesCheckListBox::SetPathFilter(const wxString& value)
+	{
+		wildcardFilters.clear(); 
+		if (value.length() != 0)
+		{
+			if (!value.Contains(L"|"))
+			{
+				WildcardFilter filter(value);
+				wildcardFilters.push_back(filter);
+			}
+			else
+			{
+				auto resultOfSplit = wxSplit(value, L'|');
+				for (auto& individualFilter : resultOfSplit)
+				{
+					if (individualFilter.length() == 0)
+						continue;
+					WildcardFilter filter(individualFilter);
+					wildcardFilters.push_back(filter);
+				}
+			}
+		}
+		RefreshModules();
+	}
+
+
 	wxString ModulesCheckListBox::ApplyFilenameOnlyDecoration(const wxString& modulePath)
 	{
 		if (displayFullPath)
@@ -66,10 +93,12 @@ namespace Frames
 	}
 	std::vector<wxString> ModulesCheckListBox::ApplyPathFilter(const std::vector < wxString> &modules)
 	{
+		if (wildcardFilters.size() == 0)
+			return modules;
 		vector<wxString> result;
 		for (auto& modulePath : modules)
 		{
-			if (wildcardFilter.MatchFilter(modulePath))
+			if (MatchWildcardFilters(modulePath))
 				result.push_back(modulePath);
 		}
 		return result;
@@ -82,4 +111,17 @@ namespace Frames
 		bool newValue = this->IsChecked(index);
 		item->OptimizationDisabled(newValue);
 	}
+
+	bool ModulesCheckListBox::MatchWildcardFilters(const wxString& modulePath)
+	{
+		if (wildcardFilters.size() == 0)
+			return true;
+		for (auto& filter : wildcardFilters)
+		{
+			if (!filter.MatchFilter(modulePath))
+				return false;
+		}
+		return true;
+	}
+
 }

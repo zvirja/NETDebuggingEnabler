@@ -6,9 +6,8 @@ namespace Frames
 	class WildcardFilter
 	{
 	public:
-		WildcardFilter() {
-			filter = wxEmptyString;
-			matchMode = 0;
+		WildcardFilter(const wxString& filterValue) {
+			SetFilter(filterValue);
 		}
 		void SetFilter(const wxString& newFilter, int defaultWildcardPosition = 1);
 		bool MatchFilter(const wxString& valueToFit);

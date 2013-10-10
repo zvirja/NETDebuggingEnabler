@@ -29,20 +29,18 @@ namespace Frames
 			RefreshModules();
 		}
 
-		void SetPathFilter(const wxString& value)
-		{
-			wildcardFilter.SetFilter(value);
-			RefreshModules();
-		}
+		void SetPathFilter(const wxString& value);
 
 	private:
 		std::unique_ptr<std::vector<wxString>> modulesList;
 		bool displayFullPath;
-		WildcardFilter wildcardFilter;
+		std::vector<WildcardFilter> wildcardFilters;
 
 		wxString ModulesCheckListBox::ApplyFilenameOnlyDecoration(const wxString& modulePath);
 		std::vector<wxString> ApplyPathFilter(const std::vector < wxString> &modules);
 		wxFrame* GetParentFrame(){ return static_cast<wxFrame*>(this->m_parent); }
+		bool MatchWildcardFilters(const wxString& modulePath);
+
 
 		void OnModuleCheckedChanged(wxCommandEvent& event);
 	};

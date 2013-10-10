@@ -94,7 +94,7 @@ namespace Frames
 
 		modulesFilterTextCtrl = new wxTextCtrl(this, ID_MODULES_FILTERTEXT, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0);
 		modulesFilterTextCtrl->Enable(false);
-		modulesFilterTextCtrl->SetToolTip(wxT("Wildcard support: startsWith*,*endsWith,*contains*\nUse ^ prefix to enable case sensitive match.\nIf no wildcard present, check if starts with filter value."));
+		modulesFilterTextCtrl->SetToolTip(wxT("Wildcard support: startsWith*,*endsWith,*contains*\nUse ^ prefix to enable case sensitive match.\nUse pipe | to specify a few rules to match (e.g. *a*|^*B)\nIf no wildcard present, check if starts with filter value."));
 
 		bSizerModulesControl->Add(modulesFilterTextCtrl, 1, wxALIGN_CENTER_VERTICAL | wxBOTTOM | wxRIGHT | wxTOP, 5);
 
