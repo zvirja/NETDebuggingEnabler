@@ -22,6 +22,9 @@ namespace Managers
 		wxString GetModulePathFilter() { return GetStringValue(KeyModulePathFilter, L"^*.DLL"); }
 		void SetModulePathFilter(const wxString& value) { SetStringValue(KeyModulePathFilter, value); }
 
+		wxPoint GetLastPosition();
+		void SetLastPosition(const wxPoint& pos);
+
 	private:
 		static wxString KeyOnlyNet;
 		static wxString KeyEnableProcessNameFilter;
@@ -29,6 +32,9 @@ namespace Managers
 		static wxString KeyDisplayFullModulePaths;
 		static wxString KeyEnableModulePathFilter;
 		static wxString KeyModulePathFilter;
+		static wxString KeyPosX;
+		static wxString KeyPosY;
+
 		std::unique_ptr<wxConfigBase> actualConfig;
 
 		bool GetBoolValue(const wxString& key, bool fallbackValue);

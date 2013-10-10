@@ -23,10 +23,11 @@ namespace Frames
 
 		this->SetSizeHints(FrameWidth, FrameHeight);
 		this->BuildLayout();
-		this->Centre(wxBOTH);
 		this->SetBackgroundColour(wxColour(L"LightGray"));
 		this->SetStatusBar(new wxStatusBar(this));
 		this->SetStatusText(L"Ready");
+
+		this->SetPosition(NETDebuggingEnablerApp::AppConfig->GetLastPosition());
 
 		RestoreValuesFromConfig();
 		isReady = true;
@@ -227,6 +228,7 @@ namespace Frames
 
 
 	BEGIN_EVENT_TABLE(MainFrame, wxFrame)
+		EVT_CLOSE(MainFrame::OnClose)
 		EVT_BUTTON(wxID_REFRESH, MainFrame::OnRefresh)
 		EVT_COMBOBOX(ID_PROCESSLIST, MainFrame::OnProcessSelected)
 		EVT_CHECKBOX(ID_PROCESSLIST_ONLYNETBOX, MainFrame::OnOnlyNETChanged)
@@ -237,6 +239,13 @@ namespace Frames
 		EVT_TEXT(ID_MODULES_FILTERTEXT, MainFrame::OnModulePathFilterTextChanged)
 		EVT_BUTTON(ID_MODULES_REFRESHBUTTON, MainFrame::OnModulesReload)
 		END_EVENT_TABLE()
+
+
+		void	MainFrame::OnClose(wxCloseEvent& event)
+		{
+			NETDebuggingEnablerApp::AppConfig->SetLastPosition(this->GetPosition());
+			event.Skip();
+		}
 
 
 	void MainFrame::OnRefresh(wxCommandEvent& event)

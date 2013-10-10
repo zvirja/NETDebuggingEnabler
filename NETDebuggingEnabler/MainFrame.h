@@ -52,6 +52,7 @@ namespace Frames
 
 
 		DECLARE_EVENT_TABLE();
+		void OnClose(wxCloseEvent& event);
 		void OnRefresh(wxCommandEvent& event);
 		void OnProcessSelected(wxCommandEvent& event);
 		void OnOnlyNETChanged(wxCommandEvent& event);
