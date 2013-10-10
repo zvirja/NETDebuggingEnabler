@@ -7,9 +7,9 @@ using namespace std;
 namespace Frames
 {
 	ModulesCheckListBox::ModulesCheckListBox(
-		wxWindow *parent, wxWindowID winid, const wxPoint& pos, 
-		const wxSize& size, const wxArrayString& choices, long style /*= 0*/, 
-		const wxValidator& 	validator /*= wxDefaultValidator*/, const wxString& name /*= wxListBoxNameStr*/) : 
+		wxWindow *parent, wxWindowID winid, const wxPoint& pos,
+		const wxSize& size, const wxArrayString& choices, long style /*= 0*/,
+		const wxValidator& 	validator /*= wxDefaultValidator*/, const wxString& name /*= wxListBoxNameStr*/) :
 		wxCheckListBox(parent, winid, pos, size, choices, style, validator, name), displayFullPath(false), wildcardFilters()
 	{
 		this->modulesList = std::unique_ptr<std::vector<wxString>>(nullptr);
@@ -60,24 +60,16 @@ namespace Frames
 
 	void ModulesCheckListBox::SetPathFilter(const wxString& value)
 	{
-		wildcardFilters.clear(); 
+		wildcardFilters.clear();
 		if (value.length() != 0)
 		{
-			if (!value.Contains(L"|"))
+			auto resultOfSplit = wxSplit(value, L'|');
+			for (auto& individualFilter : resultOfSplit)
 			{
-				WildcardFilter filter(value);
+				if (individualFilter.length() == 0)
+					continue;
+				WildcardFilter filter(individualFilter);
 				wildcardFilters.push_back(filter);
-			}
-			else
-			{
-				auto resultOfSplit = wxSplit(value, L'|');
-				for (auto& individualFilter : resultOfSplit)
-				{
-					if (individualFilter.length() == 0)
-						continue;
-					WildcardFilter filter(individualFilter);
-					wildcardFilters.push_back(filter);
-				}
 			}
 		}
 		RefreshModules();
