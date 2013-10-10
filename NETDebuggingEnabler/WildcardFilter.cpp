@@ -10,29 +10,39 @@ namespace Frames
 			this->filter = wxEmptyString;
 			return;
 		}
-		if (newFilter.StartsWith(L"*"))
+		wxString newFilterChanged = newFilter;
+		if (newFilterChanged.StartsWith(L"^"))
 		{
-			if (newFilter.EndsWith(L"*"))
+			caseSensitive = true;
+			newFilterChanged = newFilterChanged.Mid(1, newFilterChanged.length() - 1);
+		}
+		else
+		{
+			caseSensitive = false;
+		}
+		if (newFilterChanged.StartsWith(L"*"))
+		{
+			if (newFilterChanged.EndsWith(L"*"))
 			{
-				this->filter = newFilter.Mid(1, newFilter.length() - 2).Upper();
+				this->filter = GetUpperedValueIfNeed(newFilterChanged.Mid(1, newFilterChanged.length() - 2));
 				this->matchMode = 0;
 			}
 			else
 			{
-				this->filter = newFilter.Mid(1, newFilter.length() - 1).Upper();
+				this->filter = GetUpperedValueIfNeed(newFilterChanged.Mid(1, newFilterChanged.length() - 1));
 				this->matchMode = -1;
 			}
 		}
 		else
 		{
-			if (newFilter.EndsWith(L"*"))
+			if (newFilterChanged.EndsWith(L"*"))
 			{
-				this->filter = newFilter.Mid(0, newFilter.length() - 1).Upper();
+				this->filter = GetUpperedValueIfNeed(newFilterChanged.Mid(0, newFilterChanged.length() - 1));
 				this->matchMode = 1;
 			}
 			else
 			{
-				this->filter = newFilter.Upper();
+				this->filter = GetUpperedValueIfNeed(newFilterChanged);
 				this->matchMode = defaultWildcardPosition;
 			}
 		}
@@ -42,16 +52,17 @@ namespace Frames
 	{
 		if (filter.length() == 0 || filter == wxEmptyString)
 			return true;
+		wxString valueToFitUppered = GetUpperedValueIfNeed(valueToFit);
 		switch (this->matchMode)
 		{
-		case -1:
-			return valueToFit.Upper().EndsWith(this->filter);
+		case - 1:
+			return valueToFitUppered.EndsWith(this->filter);
 		case 0:
-			return valueToFit.Upper().Contains(this->filter);
+			return valueToFitUppered.Contains(this->filter);
 		case 1:
-			return valueToFit.Upper().StartsWith(filter);
+			return valueToFitUppered.StartsWith(filter);
 		default:
-			return valueToFit.Upper() == this->filter;
+			return valueToFitUppered == this->filter;
 		}
 	}
 }

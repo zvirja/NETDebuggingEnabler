@@ -653,7 +653,7 @@
                             <property name="border">5</property>
                             <property name="flag">wxALIGN_CENTER_VERTICAL|wxLEFT</property>
                             <property name="proportion">0</property>
-                            <object class="wxButton" expanded="1">
+                            <object class="wxBitmapButton" expanded="1">
                                 <property name="BottomDockable">1</property>
                                 <property name="LeftDockable">1</property>
                                 <property name="RightDockable">1</property>
@@ -664,6 +664,7 @@
                                 <property name="aui_row"></property>
                                 <property name="best_size"></property>
                                 <property name="bg"></property>
+                                <property name="bitmap">Load From Resource; REFRESH_PNG2</property>
                                 <property name="caption"></property>
                                 <property name="caption_visible">1</property>
                                 <property name="center_pane">0</property>
@@ -672,17 +673,20 @@
                                 <property name="context_menu">1</property>
                                 <property name="default">0</property>
                                 <property name="default_pane">0</property>
+                                <property name="disabled"></property>
                                 <property name="dock">Dock</property>
                                 <property name="dock_fixed">0</property>
                                 <property name="docking">Left</property>
                                 <property name="enabled">1</property>
                                 <property name="fg"></property>
                                 <property name="floatable">1</property>
+                                <property name="focus"></property>
                                 <property name="font"></property>
                                 <property name="gripper">0</property>
                                 <property name="hidden">0</property>
+                                <property name="hover"></property>
                                 <property name="id">ID_MODULES_REFRESHBUTTON</property>
-                                <property name="label">RM</property>
+                                <property name="label"></property>
                                 <property name="max_size"></property>
                                 <property name="maximize_button">0</property>
                                 <property name="maximum_size"></property>
@@ -698,12 +702,13 @@
                                 <property name="pin_button">1</property>
                                 <property name="pos"></property>
                                 <property name="resize">Resizable</property>
+                                <property name="selected"></property>
                                 <property name="show">1</property>
-                                <property name="size">30,-1</property>
-                                <property name="style"></property>
+                                <property name="size">30,30</property>
+                                <property name="style">wxBU_AUTODRAW</property>
                                 <property name="subclass"></property>
                                 <property name="toolbar_pane">0</property>
-                                <property name="tooltip">Reload modules</property>
+                                <property name="tooltip">Reload modules for selected process</property>
                                 <property name="validator_data_type"></property>
                                 <property name="validator_style">wxFILTER_NONE</property>
                                 <property name="validator_type">wxDefaultValidator</property>
@@ -966,7 +971,7 @@
                                 <property name="style"></property>
                                 <property name="subclass"></property>
                                 <property name="toolbar_pane">0</property>
-                                <property name="tooltip">Wildcard support: startsWith*,*endsWith,*contains*&#x0A;If no wildcard present, check if starts with filter value.</property>
+                                <property name="tooltip">Wildcard support: startsWith*,*endsWith,*contains*&#x0A;Use ^ prefix to enable case sensitive match.&#x0A;If no wildcard present, check if starts with filter value.</property>
                                 <property name="validator_data_type"></property>
                                 <property name="validator_style">wxFILTER_NONE</property>
                                 <property name="validator_type">wxDefaultValidator</property>

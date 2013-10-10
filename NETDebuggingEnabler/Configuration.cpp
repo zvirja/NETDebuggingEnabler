@@ -15,7 +15,7 @@ namespace Managers
 
 	Configuration::Configuration() :actualConfig(new wxRegConfig(L"NETDebuggingEnabler", L"Zvirja", 
 		wxEmptyString, wxEmptyString, wxCONFIG_USE_LOCAL_FILE))
-	{		
+	{		 
 	}
 
 

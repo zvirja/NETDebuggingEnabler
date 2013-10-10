@@ -268,8 +268,9 @@
     <ResourceCompile Include="NETDebuggingEnabler.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Icons\Bug.ico" />
+    <Image Include="Icons\bug1.ico" />
     <Image Include="Icons\Bug2.ico" />
+    <Image Include="Icons\refresh5.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

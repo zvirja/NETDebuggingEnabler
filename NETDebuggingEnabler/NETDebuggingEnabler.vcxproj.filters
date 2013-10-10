@@ -117,10 +117,13 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Icons\Bug.ico">
+    <Image Include="Icons\Bug2.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Icons\Bug2.ico">
+    <Image Include="Icons\bug1.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Icons\refresh5.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

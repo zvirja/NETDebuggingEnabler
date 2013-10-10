@@ -1,6 +1,7 @@
 #include "baseset.h"
 #include "MainFrame.h"
 #include "NETDebuggingEnablerApp.h"
+#include <wx/imagpng.h>
 
 using namespace std;
 using namespace Managers;
@@ -12,6 +13,9 @@ namespace Frames
 		wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxSYSTEM_MENU | wxCAPTION | wxCLOSE_BOX | wxCLIP_CHILDREN | wxNO_FULL_REPAINT_ON_RESIZE)
 	{
 		this->processManager = unique_ptr < ProcessManager>(new ProcessManager());
+
+		//Register PNG image handler
+		wxImage::AddHandler(new wxPNGHandler);
 
 		//Frame Initialization
 
@@ -74,8 +78,8 @@ namespace Frames
 		wxBoxSizer* bSizerModulesControl;
 		bSizerModulesControl = new wxBoxSizer(wxHORIZONTAL);
 
-		modulesRefreshButton = new wxButton(this, ID_MODULES_REFRESHBUTTON, wxT("RM"), wxDefaultPosition, wxSize(30, -1), 0);
-		modulesRefreshButton->SetToolTip(wxT("Reload modules"));
+		modulesRefreshButton = new wxBitmapButton(this, ID_MODULES_REFRESHBUTTON, wxBITMAP_PNG(REFRESH_PNG2), wxDefaultPosition, wxSize(30, 30), wxBU_AUTODRAW);
+		modulesRefreshButton->SetToolTip(wxT("Reload modules for selected process"));
 
 		bSizerModulesControl->Add(modulesRefreshButton, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, 5);
 
@@ -89,7 +93,7 @@ namespace Frames
 
 		modulesFilterTextCtrl = new wxTextCtrl(this, ID_MODULES_FILTERTEXT, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0);
 		modulesFilterTextCtrl->Enable(false);
-		modulesFilterTextCtrl->SetToolTip(wxT("Wildcard support: startsWith*,*endsWith,*contains*\nIf no wildcard present, check if starts with filter value."));
+		modulesFilterTextCtrl->SetToolTip(wxT("Wildcard support: startsWith*,*endsWith,*contains*\nUse ^ prefix to enable case sensitive match.\nIf no wildcard present, check if starts with filter value."));
 
 		bSizerModulesControl->Add(modulesFilterTextCtrl, 1, wxALIGN_CENTER_VERTICAL | wxBOTTOM | wxRIGHT | wxTOP, 5);
 
