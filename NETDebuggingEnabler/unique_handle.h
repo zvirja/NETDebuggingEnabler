@@ -9,6 +9,7 @@ public:
 	{
 		return this->handle;
 	}
+	HANDLE operator *() { return this->handle; }
 private:
 	HANDLE handle;
 };
