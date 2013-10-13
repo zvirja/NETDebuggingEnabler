@@ -12,12 +12,12 @@ public:
 	
 	wxString& GetFullModulePath(){ return FullModulePath; }
 	bool IsOptimizationDisabled() { return optimizationController.IsOptimizationDisabled(); }
-	void OptimizationDisabled(bool disableOptimization) 
+	bool OptimizationDisabled(bool disableOptimization) 
 	{
 		if (disableOptimization)
-			optimizationController.DisableOptimization();
+			return optimizationController.DisableOptimization();
 		else
-			optimizationController.EnableOptimization();
+			return optimizationController.EnableOptimization();
 	}
 private:
 	wxString FullModulePath;

@@ -101,7 +101,11 @@ namespace Frames
 		unsigned int index = event.GetSelection();
 		auto item = static_cast<ModuleCheckListBoxItem*>(this->GetClientObject(index));
 		bool newValue = this->IsChecked(index);
-		item->OptimizationDisabled(newValue);
+		if (!item->OptimizationDisabled(newValue))
+		{
+			this->Check(index, !newValue);
+			wxMessageBox(L"Unable to modify related *.ini file. \nPlease ensure that file is editable (e.g. isn't a system file, used by another process).", L".NET Debugging enabler", wxICON_ERROR | wxOK, this->GetParent());
+		}
 	}
 
 	bool ModulesCheckListBox::MatchWildcardFilters(const wxString& modulePath)
