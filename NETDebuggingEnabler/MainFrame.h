@@ -22,11 +22,12 @@ namespace Frames
 	class MainFrame : public wxFrame
 	{
 	public:
+		static const int FrameWidth = 350;
+		static const int FrameHeight = 500;
 		MainFrame();
 		~MainFrame();
 	private:
-		static const int FrameWidth = 350;
-		static const int FrameHeight = 500;
+
 		bool isReady = false;
 		wxCheckBox* onlyNETBox;
 		wxCheckBox* processNameFilterCheckBox;

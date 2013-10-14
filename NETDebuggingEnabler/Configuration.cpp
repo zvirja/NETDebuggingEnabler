@@ -1,5 +1,6 @@
 #include "baseset.h"
 #include "Configuration.h"
+#include "MainFrame.h"
 
 using namespace std;
 
@@ -14,10 +15,13 @@ namespace Managers
 	wxString Configuration::KeyModulePathFilter = L"ModulePathFilter";
 	wxString Configuration::KeyPosX = L"LastPositionX";
 	wxString Configuration::KeyPosY = L"LastPositionY";
+	wxString Configuration::KeySizeW = L"LastSizeW";
+	wxString Configuration::KeySizeH = L"LastSizeH";
 
-	Configuration::Configuration() :actualConfig(new wxRegConfig(L"NETDebuggingEnabler", L"Zvirja", 
+
+	Configuration::Configuration() :actualConfig(new wxRegConfig(L"NETDebuggingEnabler", L"Zvirja",
 		wxEmptyString, wxEmptyString, wxCONFIG_USE_LOCAL_FILE))
-	{		 
+	{
 	}
 
 
@@ -60,6 +64,24 @@ namespace Managers
 		actualConfig->Read(KeyPosX, &lastX, 150);
 		actualConfig->Read(KeyPosY, &lastY, 150);
 		return wxPoint(lastX, lastY);
+	}
+
+	wxSize Configuration::GetLastSize()
+	{
+		int lastW, lastH;
+		int defaultW = Frames::MainFrame::FrameWidth;
+		int defaultH = Frames::MainFrame::FrameHeight;
+		actualConfig->Read(KeySizeW, &lastW, defaultW);
+		actualConfig->Read(KeySizeH, &lastH, defaultH);
+		return wxSize(lastW < defaultW ? defaultW : lastW, lastH < defaultH ? defaultH : lastH);
+	}
+
+	void Configuration::SaveLastSize(const wxSize& size)
+	{
+		if (size.GetX() > 0)
+			actualConfig->Write(KeySizeW, size.GetX());
+		if (size.GetY() > 0)
+			actualConfig->Write(KeySizeH, size.GetY());
 	}
 
 }

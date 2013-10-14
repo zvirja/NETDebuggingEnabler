@@ -28,6 +28,7 @@ namespace Frames
 		this->SetStatusText(L"Ready");
 
 		this->SetPosition(NETDebuggingEnablerApp::AppConfig->GetLastPosition());
+		this->SetSize(NETDebuggingEnablerApp::AppConfig->GetLastSize());
 
 		RestoreValuesFromConfig();
 		isReady = true;
@@ -243,7 +244,11 @@ namespace Frames
 
 		void	MainFrame::OnClose(wxCloseEvent& event)
 		{
-			NETDebuggingEnablerApp::AppConfig->SetLastPosition(this->GetPosition());
+			if (!this->IsMaximized())
+			{
+				NETDebuggingEnablerApp::AppConfig->SetLastPosition(this->GetPosition());
+				NETDebuggingEnablerApp::AppConfig->SaveLastSize(this->GetSize());
+			}
 			event.Skip();
 		}
 

@@ -19,11 +19,13 @@ namespace Managers
 		void SetDisplayFullModulePaths(bool value) { SetBoolValue(KeyDisplayFullModulePaths, value); }
 		bool GetEnableModulePathFilter() { return GetBoolValue(KeyEnableModulePathFilter, false); }
 		void SetEnableModulePathFilter(bool value) { SetBoolValue(KeyEnableModulePathFilter, value); }
-		wxString GetModulePathFilter() { return GetStringValue(KeyModulePathFilter, L"*assembly\dl3*"); }
+		wxString GetModulePathFilter() { return GetStringValue(KeyModulePathFilter, L"*assembly\\dl3*"); }
 		void SetModulePathFilter(const wxString& value) { SetStringValue(KeyModulePathFilter, value); }
 
 		wxPoint GetLastPosition();
 		void SetLastPosition(const wxPoint& pos);
+		wxSize GetLastSize();
+		void SaveLastSize(const wxSize& size);
 
 	private:
 		static wxString KeyOnlyNet;
@@ -34,6 +36,9 @@ namespace Managers
 		static wxString KeyModulePathFilter;
 		static wxString KeyPosX;
 		static wxString KeyPosY;
+		static wxString KeySizeW;
+		static wxString KeySizeH;
+
 
 		std::unique_ptr<wxConfigBase> actualConfig;
 
