@@ -164,6 +164,11 @@ namespace Frames
 			ProcessInfo* processInfo = static_cast<ProcessInfo*>(processesBox->GetClientObject(0));
 			UpdateModulesForProcessInfo(*processInfo);
 		}
+		else
+		{
+			//If we don't perform this, the modules list will contain old entries.
+			modulesListBox->ClearModules();
+		}
 
 	}
 
@@ -300,13 +305,12 @@ namespace Frames
 		if (enablePathFilter->IsChecked())
 		{
 			this->modulesListBox->SetPathFilter(this->modulesFilterTextCtrl->GetValue());
-			this->modulesFilterTextCtrl->Enable(true);
 		}
 		else
 		{
 			this->modulesListBox->SetPathFilter(wxEmptyString);
-			this->modulesFilterTextCtrl->Enable(false);
 		}
+		this->modulesFilterTextCtrl->Enable(enablePathFilter->IsChecked());
 		NETDebuggingEnablerApp::AppConfig->SetEnableModulePathFilter(enablePathFilter->IsChecked());
 	}
 
