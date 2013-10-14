@@ -244,6 +244,7 @@
     <ClInclude Include="ProcessInfo.h" />
     <ClInclude Include="ProcessManager.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="SmoothScrollingWarning.h" />
     <ClInclude Include="StatusTextStackUpdater.h" />
     <ClInclude Include="unique_handle.h" />
     <ClInclude Include="WildcardFilter.h" />
@@ -261,6 +262,7 @@
     <ClCompile Include="PrivilegiesAdjuster.cpp" />
     <ClCompile Include="ProcessInfo.cpp" />
     <ClCompile Include="ProcessManager.cpp" />
+    <ClCompile Include="SmoothScrollingWarning.cpp" />
     <ClCompile Include="unique_handle.cpp" />
     <ClCompile Include="WildcardFilter.cpp" />
   </ItemGroup>

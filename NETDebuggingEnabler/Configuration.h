@@ -26,6 +26,7 @@ namespace Managers
 		void SetLastPosition(const wxPoint& pos);
 		wxSize GetLastSize();
 		void SaveLastSize(const wxSize& size);
+		bool RequestForSmoothScrollingWarning();
 
 	private:
 		static wxString KeyOnlyNet;
@@ -38,6 +39,8 @@ namespace Managers
 		static wxString KeyPosY;
 		static wxString KeySizeW;
 		static wxString KeySizeH;
+		static wxString KeySmoothScrollingWarning;
+
 
 
 		std::unique_ptr<wxConfigBase> actualConfig;

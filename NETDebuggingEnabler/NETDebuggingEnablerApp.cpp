@@ -2,6 +2,8 @@
 #include "NETDebuggingEnablerApp.h"
 #include "MainFrame.h"
 #include "PrivilegiesAdjuster.h"
+#include "SmoothScrollingWarning.h"
+
 using namespace Frames;
 using namespace Managers;
 
@@ -24,7 +26,7 @@ bool NETDebuggingEnablerApp::OnInit()
 	{
 		return false;
 	}
-
+	SmoothScrollingWarning::WarnIfEnabledOnce();
 	MainFrame* mainFrame = new MainFrame;
 	mainFrame->Show(true);
 	return true;

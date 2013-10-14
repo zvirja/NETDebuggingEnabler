@@ -17,7 +17,7 @@ namespace Managers
 	wxString Configuration::KeyPosY = L"LastPositionY";
 	wxString Configuration::KeySizeW = L"LastSizeW";
 	wxString Configuration::KeySizeH = L"LastSizeH";
-
+	wxString Configuration::KeySmoothScrollingWarning = L"SmoothScrollingWarningWasDisplayed";
 
 	Configuration::Configuration() :actualConfig(new wxRegConfig(L"NETDebuggingEnabler", L"Zvirja",
 		wxEmptyString, wxEmptyString, wxCONFIG_USE_LOCAL_FILE))
@@ -82,6 +82,16 @@ namespace Managers
 			actualConfig->Write(KeySizeW, size.GetX());
 		if (size.GetY() > 0)
 			actualConfig->Write(KeySizeH, size.GetY());
+	}
+
+	bool Configuration::RequestForSmoothScrollingWarning()
+	{
+		if (!actualConfig->ReadBool(KeySmoothScrollingWarning, false))
+		{
+			actualConfig->Write(KeySmoothScrollingWarning, true);
+			return true;
+		}
+		return false;
 	}
 
 }

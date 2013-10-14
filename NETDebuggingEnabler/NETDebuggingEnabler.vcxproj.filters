@@ -72,6 +72,9 @@
     <ClInclude Include="Configuration.h">
       <Filter>Header Files\Managers</Filter>
     </ClInclude>
+    <ClInclude Include="SmoothScrollingWarning.h">
+      <Filter>Header Files\Managers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="NETDebuggingEnablerApp.cpp">
@@ -108,6 +111,9 @@
       <Filter>Source Files\Managers</Filter>
     </ClCompile>
     <ClCompile Include="Configuration.cpp">
+      <Filter>Source Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="SmoothScrollingWarning.cpp">
       <Filter>Source Files\Managers</Filter>
     </ClCompile>
   </ItemGroup>
