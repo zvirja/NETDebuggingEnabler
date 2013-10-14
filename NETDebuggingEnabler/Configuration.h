@@ -19,7 +19,7 @@ namespace Managers
 		void SetDisplayFullModulePaths(bool value) { SetBoolValue(KeyDisplayFullModulePaths, value); }
 		bool GetEnableModulePathFilter() { return GetBoolValue(KeyEnableModulePathFilter, false); }
 		void SetEnableModulePathFilter(bool value) { SetBoolValue(KeyEnableModulePathFilter, value); }
-		wxString GetModulePathFilter() { return GetStringValue(KeyModulePathFilter, L"*ASP.NET*|^*.DLL"); }
+		wxString GetModulePathFilter() { return GetStringValue(KeyModulePathFilter, L"*assembly\dl3*"); }
 		void SetModulePathFilter(const wxString& value) { SetStringValue(KeyModulePathFilter, value); }
 
 		wxPoint GetLastPosition();
