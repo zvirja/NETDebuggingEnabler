@@ -69,7 +69,6 @@ namespace Managers
 			if (pe32.th32ProcessID != 0)
 			{
 				ProcessInfo pi(wxString(pe32.szExeFile), pe32.th32ProcessID);
-				DWORD d;
 				hintExtractor.FillProcessInfoWithHint(pe32.th32ProcessID, pi);
 				resultList.push_back(move(pi));
 			}
