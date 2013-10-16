@@ -4,6 +4,7 @@
 #include <wx\wx.h>
 #include "ProcessInfo.h"
 #include <NTSecAPI.h>
+#include "ProcessHintExtractor.h"
 
 namespace Managers
 {
@@ -37,6 +38,7 @@ namespace Managers
 		std::vector<wxString> GetModulesForProcessId(int processID, DWORD& resultCode, bool skipMappings = false);
 	private:
 		std::map<wxString, wxString> DriveMappings;
+		ProcessHintExtractor hintExtractor;
 		std::set<wxString, wxStringOrdinalComparator> GetModulesForProcessIdInternalV1(int processID, DWORD& resultCode);
 		std::set<wxString, wxStringOrdinalComparator> GetModulesForProcessIdInternalV2(int processID, DWORD& resultCode);
 		std::set<wxString, wxStringOrdinalComparator> GetModulesForProcessIdInternalV3(int processID, DWORD& resultCode);

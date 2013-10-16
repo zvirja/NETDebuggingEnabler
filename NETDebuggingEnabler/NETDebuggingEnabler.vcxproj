@@ -241,6 +241,7 @@
     <ClInclude Include="NETDebuggingEnablerApp.h" />
     <ClInclude Include="OptimizationController.h" />
     <ClInclude Include="PrivilegiesAdjuster.h" />
+    <ClInclude Include="ProcessHintExtractor.h" />
     <ClInclude Include="ProcessInfo.h" />
     <ClInclude Include="ProcessManager.h" />
     <ClInclude Include="resource.h" />
@@ -260,6 +261,7 @@
     <ClCompile Include="NETDebuggingEnablerApp.cpp" />
     <ClCompile Include="OptimizationController.cpp" />
     <ClCompile Include="PrivilegiesAdjuster.cpp" />
+    <ClCompile Include="ProcessHintExtractor.cpp" />
     <ClCompile Include="ProcessInfo.cpp" />
     <ClCompile Include="ProcessManager.cpp" />
     <ClCompile Include="SmoothScrollingWarning.cpp" />

@@ -16,7 +16,7 @@ using namespace Frames;
 
 namespace Managers
 {
-	ProcessManager::ProcessManager() :DriveMappings()
+	ProcessManager::ProcessManager() :DriveMappings(), hintExtractor()
 	{
 		InitDriveMappings();
 	}
@@ -34,7 +34,7 @@ namespace Managers
 		HANDLE fileHandle = FindFirstVolumeW(volumeName, sizeof(volumeName));
 		if (fileHandle == INVALID_HANDLE_VALUE)
 			return;
-		do 
+		do
 		{
 			auto index = wcslen(volumeName) - 1;
 			volumeName[index] = L'\0';
@@ -47,7 +47,7 @@ namespace Managers
 			}
 
 
-		} while (FindNextVolumeW(fileHandle,volumeName,sizeof(volumeName)));
+		} while (FindNextVolumeW(fileHandle, volumeName, sizeof(volumeName)));
 		FindClose(fileHandle);
 	}
 
@@ -67,7 +67,12 @@ namespace Managers
 		do
 		{
 			if (pe32.th32ProcessID != 0)
-				resultList.push_back(ProcessInfo(wxString(pe32.szExeFile), pe32.th32ProcessID));
+			{
+				ProcessInfo pi(wxString(pe32.szExeFile), pe32.th32ProcessID);
+				DWORD d;
+				hintExtractor.FillProcessInfoWithHint(pe32.th32ProcessID, pi);
+				resultList.push_back(move(pi));
+			}
 		} while (Process32Next(hProcessSnap.get(), &pe32));
 		return move(resultList);
 	}
@@ -211,7 +216,4 @@ namespace Managers
 		}
 		return pathWithDevicePrefix;
 	}
-
-
-
 }
