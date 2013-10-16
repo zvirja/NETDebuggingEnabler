@@ -156,7 +156,7 @@ namespace Frames
 		for (auto iterator = processItems.begin(); iterator != processItems.end(); iterator++)
 		{
 			ProcessInfo& info = *iterator;
-			processesBox->Append(wxString::Format(L"%s (%d)", info.GetName(), info.GetID()), new ProcessInfo(info));
+			processesBox->Append(info.GetNameToDisplay(), new ProcessInfo(info));
 		}
 		if (processItems.size() > 0)
 		{

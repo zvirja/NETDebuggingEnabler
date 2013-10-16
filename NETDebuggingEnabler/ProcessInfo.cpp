@@ -25,4 +25,14 @@ namespace Frames
 	{
 		return this->processId;
 	}
+
+	wxString ProcessInfo::GetNameToDisplay()
+	{
+		if (nameHint.IsEmpty())
+			return wxString::Format(L"%s (%d)", *processName, processId);
+		else
+			return wxString::Format(L"%s (%d) -- %s", *processName, processId, nameHint);
+
+	}
+
 }
