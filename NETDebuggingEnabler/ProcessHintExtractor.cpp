@@ -37,7 +37,11 @@ namespace Managers
 			return;
 
 		//Apply this filter only to w3wp
-		/*if (!processInfo.GetName().Upper().Contains("W3WP"))
+		if (!processInfo.GetName().Upper().Contains("W3WP"))
+			return;
+
+		//For debug purpose
+	/*	if (!processInfo.GetName().Upper().Contains("TRAYGAR"))
 			return;*/
 
 		//Open process
@@ -71,12 +75,38 @@ namespace Managers
 			return;
 
 
-		//Stuff to clear later
-		wxString sttrr(commandLineBuffer.get());
+		wxString rawCommandLine(commandLineBuffer.get());
 
+		//For debug purpose
+		//wxString rawCommandLine = L"c:\\windows\\system32\\inetsrv\\w3wp.exe -ap \"sc660rev120918Clean\" -v \"v4.0\" -l \"webengine4.dll\" -a \\\\.\\pipe\\iisipm7153bb97-df74-4162-a277-00d3c9f60094 -h \"C:\\inetpub\\temp\\apppools\\sc660rev120918Clean\\sc660rev120918Clean.config\" -w \"\" -m 0 -t 20";
 
- 		int a = 10;
+		wxString hint = ExtractHintFromParams(rawCommandLine);
+		if (!hint.IsEmpty())
+			processInfo.SetNameHint(hint);
 	}
+
+	wxString ProcessHintExtractor::ExtractHintFromParams(const wxString& rawCommandLine)
+	{
+		auto splittedArgs = wxSplit(rawCommandLine, L' ');
+		if (splittedArgs.GetCount() < 2)
+			return wxString();
+		for (size_t i = 0; i < splittedArgs.GetCount(); i++)
+		{
+			if (splittedArgs[i].CmpNoCase(L"-ap") == 0)
+			{
+				if (splittedArgs.GetCount() > i + 1)
+				{
+					auto argToReturn = splittedArgs[i + 1];
+					if (argToReturn.StartsWith(L"\"") && argToReturn.EndsWith(L"\""))
+						return argToReturn.Mid(1, argToReturn.length() - 2);
+					return argToReturn;
+				}
+			}
+		}
+		return wxString();
+	}
+
+
 
 
 

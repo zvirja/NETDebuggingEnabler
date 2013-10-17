@@ -83,5 +83,6 @@ namespace Managers
 	private:
 		HMODULE  hNtDll;
 		ProcessHintExtractorStuff::PNtQueryInformationProcess NtQueryInformationProcess;
+		wxString ExtractHintFromParams(const wxString& rawCommandLine);
 	};
 }
