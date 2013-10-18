@@ -34,9 +34,15 @@ namespace Managers
 		return actualConfig->ReadBool(key, fallbackValue);
 	}
 
-	void Configuration::SetBoolValue(const wxString& key, bool value)
+	void Configuration::SetBoolValue(const wxString& key, bool value, bool defaultValue)
 	{
-		actualConfig->Write(key, value);
+		if(GetBoolValue(key,defaultValue) != value)
+		{
+			if(value == defaultValue)
+				actualConfig->DeleteEntry(key);
+			else
+				actualConfig->Write(key, value);
+		}
 	}
 
 	wxString Configuration::GetStringValue(const wxString& key, const wxString& fallbackValue)
@@ -44,9 +50,15 @@ namespace Managers
 		return actualConfig->Read(key, fallbackValue);
 	}
 
-	void Configuration::SetStringValue(const wxString& key, const wxString& value)
+	void Configuration::SetStringValue(const wxString& key, const wxString& value, const wxString& defalutValue)
 	{
-		actualConfig->Write(key, value);
+		if(GetStringValue(key,defalutValue).CmpNoCase(value) != 0)
+		{
+			if(value.CmpNoCase(defalutValue) == 0)
+				actualConfig->DeleteEntry(key);
+			else
+				actualConfig->Write(key, value);
+		}
 	}
 
 	void Configuration::SetLastPosition(const wxPoint& pos)
