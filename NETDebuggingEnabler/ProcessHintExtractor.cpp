@@ -93,31 +93,31 @@ namespace Managers
 		for (size_t i = 0; i < splittedArgs.GetCount(); i++)
 		{
 			if (splittedArgs[i].CmpNoCase(L"-ap") == 0)
-			{
+			{ 
 				//Here I collect all string in quotes
-				wxString finalHint;
+				wxString finalHint; 
 				bool alreadyInQuote = false;
-
-				for (size_t j = i+1; j < splittedArgs.GetCount(); j++)
+				
+				for (size_t j = i + 1; j < splittedArgs.GetCount(); j++)
 				{
 					auto currentLine = splittedArgs[j];
-					if(currentLine.CmpNoCase(L"\"") == 0)
-					{
-						if(alreadyInQuote)
+					if (currentLine.CmpNoCase(L"\"") == 0)
+					{ 
+						if (alreadyInQuote)
 							break;
 						alreadyInQuote = true;
 						continue;
 					}
-					if(currentLine.StartsWith(L"\""))
+					if (currentLine.StartsWith(L"\""))
 					{
-						if(alreadyInQuote)
+						if (alreadyInQuote)
 							break;
 						alreadyInQuote = true;
-						currentLine = currentLine.Mid(1,currentLine.length() -1);
+						currentLine = currentLine.Mid(1, currentLine.length() - 1);
 					}
-					if(currentLine.EndsWith("\""))
+					if (currentLine.EndsWith("\""))
 					{
-						currentLine = currentLine.Mid(0,currentLine.length() -1);
+						currentLine = currentLine.Mid(0, currentLine.length() - 1);
 						finalHint += currentLine + L" ";
 						break;
 					}
@@ -131,10 +131,10 @@ namespace Managers
 				//This code doesn't handle quotes
 				/*if (splittedArgs.GetCount() > i + 1)
 				{
-					auto argToReturn = splittedArgs[i + 1];
-					if (argToReturn.StartsWith(L"\"") && argToReturn.EndsWith(L"\""))
-						return argToReturn.Mid(1, argToReturn.length() - 2);
-					return argToReturn;
+				auto argToReturn = splittedArgs[i + 1];
+				if (argToReturn.StartsWith(L"\"") && argToReturn.EndsWith(L"\""))
+				return argToReturn.Mid(1, argToReturn.length() - 2);
+				return argToReturn;
 				}*/
 			}
 		}
