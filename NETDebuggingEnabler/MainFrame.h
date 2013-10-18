@@ -28,7 +28,7 @@ namespace Frames
 		~MainFrame();
 	private:
 
-		bool isReady = false;
+		bool isReady;
 		wxCheckBox* onlyNETBox;
 		wxCheckBox* processNameFilterCheckBox;
 		wxTextCtrl* processNameFilterTextBox;

@@ -8,7 +8,7 @@ using namespace Managers;
 
 namespace Frames
 {
-	MainFrame::MainFrame() :wxFrame(nullptr, wxID_ANY, wxT(".NET assembly debugging enabler"),
+	MainFrame::MainFrame() : isReady(false), wxFrame(nullptr, wxID_ANY, wxT(".NET assembly debugging enabler"),
 		wxDefaultPosition, wxSize(FrameWidth, FrameHeight),
 		wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxSYSTEM_MENU | wxCAPTION | wxCLOSE_BOX | wxCLIP_CHILDREN | wxNO_FULL_REPAINT_ON_RESIZE)
 	{

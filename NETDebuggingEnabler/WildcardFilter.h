@@ -6,7 +6,7 @@ namespace Frames
 	class WildcardFilter
 	{
 	public:
-		WildcardFilter(const wxString& filterValue) {
+		WildcardFilter(const wxString& filterValue): caseSensitive(false) {
 			SetFilter(filterValue);
 		}
 		void SetFilter(const wxString& newFilter, int defaultWildcardPosition = 1);
@@ -14,7 +14,7 @@ namespace Frames
 	private:
 		wxString filter;
 		int matchMode;
-		bool caseSensitive = false;
+		bool caseSensitive;
 		wxString GetUpperedValueIfNeed(const wxString& input) { return caseSensitive ? input : input.Upper(); }
 	};
 }
