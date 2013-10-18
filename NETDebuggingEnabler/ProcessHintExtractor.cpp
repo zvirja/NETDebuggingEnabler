@@ -41,8 +41,8 @@ namespace Managers
 			return;
 
 		//For debug purpose
-	/*	if (!processInfo.GetName().Upper().Contains("TRAYGAR"))
-			return;*/
+		/*	if (!processInfo.GetName().Upper().Contains("TRAYGAR"))
+		return;*/
 
 		//Open process
 		unique_handle process(OpenProcess(PROCESS_ALL_ACCESS, false, processID));
@@ -78,7 +78,7 @@ namespace Managers
 		wxString rawCommandLine(commandLineBuffer.get());
 
 		//For debug purpose
-		//wxString rawCommandLine = L"c:\\windows\\system32\\inetsrv\\w3wp.exe -ap \"sc660rev120918Clean\" -v \"v4.0\" -l \"webengine4.dll\" -a \\\\.\\pipe\\iisipm7153bb97-df74-4162-a277-00d3c9f60094 -h \"C:\\inetpub\\temp\\apppools\\sc660rev120918Clean\\sc660rev120918Clean.config\" -w \"\" -m 0 -t 20";
+		//wxString rawCommandLine = L"c:\\windows\\system32\\inetsrv\\w3wp.exe -ap \"sc 660 rev120918 Clean \" -v \"v4.0\" -l \"webengine4.dll\" -a \\\\.\\pipe\\iisipm7153bb97-df74-4162-a277-00d3c9f60094 -h \"C:\\inetpub\\temp\\apppools\\sc660rev120918Clean\\sc660rev120918Clean.config\" -w \"\" -m 0 -t 20";
 
 		wxString hint = ExtractHintFromParams(rawCommandLine);
 		if (!hint.IsEmpty())
@@ -94,13 +94,48 @@ namespace Managers
 		{
 			if (splittedArgs[i].CmpNoCase(L"-ap") == 0)
 			{
-				if (splittedArgs.GetCount() > i + 1)
+				//Here I collect all string in quotes
+				wxString finalHint;
+				bool alreadyInQuote = false;
+
+				for (size_t j = i+1; j < splittedArgs.GetCount(); j++)
+				{
+					auto currentLine = splittedArgs[j];
+					if(currentLine.CmpNoCase(L"\"") == 0)
+					{
+						if(alreadyInQuote)
+							break;
+						alreadyInQuote = true;
+						continue;
+					}
+					if(currentLine.StartsWith(L"\""))
+					{
+						if(alreadyInQuote)
+							break;
+						alreadyInQuote = true;
+						currentLine = currentLine.Mid(1,currentLine.length() -1);
+					}
+					if(currentLine.EndsWith("\""))
+					{
+						currentLine = currentLine.Mid(0,currentLine.length() -1);
+						finalHint += currentLine + L" ";
+						break;
+					}
+					else
+						finalHint += currentLine + L" ";
+				}
+
+				return finalHint.Trim();
+
+
+				//This code doesn't handle quotes
+				/*if (splittedArgs.GetCount() > i + 1)
 				{
 					auto argToReturn = splittedArgs[i + 1];
 					if (argToReturn.StartsWith(L"\"") && argToReturn.EndsWith(L"\""))
 						return argToReturn.Mid(1, argToReturn.length() - 2);
 					return argToReturn;
-				}
+				}*/
 			}
 		}
 		return wxString();
