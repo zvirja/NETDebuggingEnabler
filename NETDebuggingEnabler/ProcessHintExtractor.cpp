@@ -31,7 +31,6 @@ namespace Managers
 
 	void ProcessHintExtractor::FillProcessInfoWithHint(DWORD processID, Frames::ProcessInfo& processInfo)
 	{
-
 		//Check if import was successful
 		if (NtQueryInformationProcess == nullptr)
 			return;
@@ -57,7 +56,6 @@ namespace Managers
 
 		//Extract PEB from foreign memory
 		PEB peb;
-		auto ss = sizeof(peb);
 		size_t pebResLen;
 		if (!ReadProcessMemory(process.get(), procBasicInfo.PebBaseAddress, &peb, sizeof(PEB), &pebResLen))
 			return;
@@ -115,7 +113,7 @@ namespace Managers
 						alreadyInQuote = true;
 						currentLine = currentLine.Mid(1, currentLine.length() - 1);
 					}
-					if (currentLine.EndsWith("\""))
+					if (currentLine.EndsWith(L"\""))
 					{
 						currentLine = currentLine.Mid(0, currentLine.length() - 1);
 						finalHint += currentLine + L" ";
