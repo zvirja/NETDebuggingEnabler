@@ -36,7 +36,7 @@ namespace Managers
 			return;
 
 		//Apply this filter only to w3wp
-		if (!processInfo.GetName().Upper().Contains("W3WP"))
+		if (!processInfo.GetName().Upper().Contains(L"W3WP"))
 			return;
 
 		//For debug purpose
