@@ -10,7 +10,9 @@ namespace UI
 {
 	MainFrame::MainFrame() : isReady(false), wxFrame(nullptr, wxID_ANY, wxT(".NET assembly debugging enabler"),
 		wxDefaultPosition, wxSize(FrameWidth, FrameHeight),
-		wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxSYSTEM_MENU | wxCAPTION | wxCLOSE_BOX | wxCLIP_CHILDREN | wxNO_FULL_REPAINT_ON_RESIZE)
+		wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxSYSTEM_MENU | wxCAPTION | wxCLOSE_BOX | wxCLIP_CHILDREN | wxNO_FULL_REPAINT_ON_RESIZE),
+
+		processFilterBundle(nullptr), modulePathFilterBundle(nullptr)
 	{
 		this->processManager = unique_ptr < ProcessManager>(new ProcessManager());
 
@@ -23,6 +25,7 @@ namespace UI
 
 		this->SetSizeHints(FrameWidth, FrameHeight);
 		this->BuildLayout();
+		this->InitializeBundles();
 		this->SetBackgroundColour(wxColour(L"LightGray"));
 		this->SetStatusBar(new wxStatusBar(this));
 		this->SetStatusText(L"Ready");
@@ -116,6 +119,14 @@ namespace UI
 		this->Layout();
 	}
 
+
+	void MainFrame::InitializeBundles()
+	{
+		processFilterBundle.reset(new CheckTextBoxesBundle(processNameFilterCheckBox, processNameFilterTextBox));
+		modulePathFilterBundle.reset(new CheckTextBoxesBundle(modulesFilterPathCheckBox, modulesFilterTextCtrl));
+	}
+
+
 	MainFrame::~MainFrame()
 	{
 	}
@@ -126,17 +137,16 @@ namespace UI
 		Configuration* appConfig = NETDebuggingEnablerApp::AppConfig;
 		//Don't enable it for performance reason
 		//onlyNETBox->SetValue(appConfig->GetOnlyNetProcesses());
-		processNameFilterCheckBox->SetValue(appConfig->GetEnableProcessNameFilter());
-		processNameFilterTextBox->Enable(processNameFilterCheckBox->IsChecked());
-		processNameFilterTextBox->SetValue(appConfig->GetProcessNameFilter());
+		processFilterBundle->SetEnabled(appConfig->GetEnableProcessNameFilter());
+		processFilterBundle->SetTextValue(appConfig->GetProcessNameFilter());
 
 
 		modulesFullPathCheckBox->SetValue(appConfig->GetDisplayFullModulePaths());
-		modulesFilterTextCtrl->SetValue(appConfig->GetModulePathFilter());
-		modulesFilterPathCheckBox->SetValue(appConfig->GetEnableModulePathFilter());
-		modulesFilterTextCtrl->Enable(modulesFilterPathCheckBox->IsChecked());
+		modulePathFilterBundle->SetEnabled(appConfig->GetEnableModulePathFilter());
+		modulePathFilterBundle->SetTextValue(appConfig->GetModulePathFilter());
 
-		modulesListBox->SetPathFilter(modulesFilterPathCheckBox->IsChecked() ? appConfig->GetModulePathFilter() : wxEmptyString);
+		modulesListBox->SetEnablePathFilter(appConfig->GetEnableModulePathFilter());
+		modulesListBox->SetPathFilterValue(appConfig->GetModulePathFilter());
 		modulesListBox->SetDispayFullPath(modulesFullPathCheckBox->IsChecked());
 	}
 
@@ -274,7 +284,7 @@ namespace UI
 	void MainFrame::OnProcessNameFilterEnabledChanged(wxCommandEvent& event)
 	{
 		OnRefresh(event);
-		processNameFilterTextBox->Enable(processNameFilterCheckBox->IsChecked());
+		//processNameFilterTextBox->Enable(processNameFilterCheckBox->IsChecked());
 		NETDebuggingEnablerApp::AppConfig->SetEnableProcessNameFilter(processNameFilterCheckBox->IsChecked());
 	}
 
@@ -301,22 +311,14 @@ namespace UI
 
 	void MainFrame::OnModulePathFilterEnabledChanged(wxCommandEvent& event)
 	{
-		auto enablePathFilter = static_cast<wxCheckBox*>(event.GetEventObject());
-		if (enablePathFilter->IsChecked())
-		{
-			this->modulesListBox->SetPathFilter(this->modulesFilterTextCtrl->GetValue());
-		}
-		else
-		{
-			this->modulesListBox->SetPathFilter(wxEmptyString);
-		}
-		this->modulesFilterTextCtrl->Enable(enablePathFilter->IsChecked());
-		NETDebuggingEnablerApp::AppConfig->SetEnableModulePathFilter(enablePathFilter->IsChecked());
+		auto enablePathFilterCheckbox = static_cast<wxCheckBox*>(event.GetEventObject());
+		modulesListBox->SetEnablePathFilter(enablePathFilterCheckbox->IsChecked());
+		NETDebuggingEnablerApp::AppConfig->SetEnableModulePathFilter(enablePathFilterCheckbox->IsChecked());
 	}
 
 	void MainFrame::OnModulePathFilterTextChanged(wxCommandEvent& event)
 	{
-		this->modulesListBox->SetPathFilter(this->modulesFilterTextCtrl->GetValue());
+		this->modulesListBox->SetPathFilterValue(this->modulesFilterTextCtrl->GetValue());
 		NETDebuggingEnablerApp::AppConfig->SetModulePathFilter(modulesFilterTextCtrl->GetValue());
 	}
 

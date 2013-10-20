@@ -22,8 +22,7 @@ namespace UI
 
 	void ModulesCheckListBox::ReInitializeModules(const std::vector<wxString>& modules)
 	{
-		auto copy = new vector<wxString>(modules);
-		modulesList.reset(copy);
+		modulesList.reset(new vector<wxString>(modules));
 		RefreshModules();
 	}
 
@@ -58,7 +57,7 @@ namespace UI
 	}
 
 
-	void ModulesCheckListBox::SetPathFilter(const wxString& value)
+	void ModulesCheckListBox::SetPathFilterValue(const wxString& value)
 	{
 		wildcardFilters.clear();
 		if (value.length() != 0)
@@ -85,7 +84,8 @@ namespace UI
 	}
 	std::vector<wxString> ModulesCheckListBox::ApplyPathFilter(const std::vector < wxString> &modules)
 	{
-		if (wildcardFilters.size() == 0)
+
+		if (!enablePathFilter || wildcardFilters.size() == 0)
 			return modules;
 		vector<wxString> result;
 		for (auto& modulePath : modules)

@@ -244,6 +244,7 @@ md "$(TargetDir)Packed"
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CheckTextBoxesBundle.h" />
     <ClInclude Include="Configuration.h" />
     <ClInclude Include="baseset.h" />
     <ClInclude Include="MainFrame.h" />
@@ -262,6 +263,7 @@ md "$(TargetDir)Packed"
     <ClInclude Include="WildcardFilter.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CheckTextBoxesBundle.cpp" />
     <ClCompile Include="Configuration.cpp" />
     <ClCompile Include="dummy.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

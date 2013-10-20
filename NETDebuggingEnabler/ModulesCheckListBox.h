@@ -29,11 +29,19 @@ namespace UI
 			RefreshModules();
 		}
 
-		void SetPathFilter(const wxString& value);
+		void SetPathFilterValue(const wxString& value);
+		void SetEnablePathFilter(bool value)
+		{
+			enablePathFilter = value;
+			RefreshModules();
+		}
+
 
 	private:
 		std::unique_ptr<std::vector<wxString>> modulesList;
 		bool displayFullPath;
+		bool enablePathFilter;
+
 		std::vector<WildcardFilter> wildcardFilters;
 
 		wxString ModulesCheckListBox::ApplyFilenameOnlyDecoration(const wxString& modulePath);

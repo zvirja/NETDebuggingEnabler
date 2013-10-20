@@ -1,6 +1,7 @@
 #pragma once
 #include "baseset.h"
 #include "ModulesCheckListBox.h"
+#include "CheckTextBoxesBundle.h"
 
 namespace UI
 {
@@ -38,15 +39,20 @@ namespace UI
 		wxButton* modulesRefreshButton;
 		wxStaticLine* m_staticline1;
 
+		std::unique_ptr<CheckTextBoxesBundle> processFilterBundle;
+		std::unique_ptr<CheckTextBoxesBundle> modulePathFilterBundle;
+
 		std::unique_ptr<Managers::ProcessManager> processManager;
 
 		void BuildLayout();
+		void InitializeBundles();
 		void RefreshProcessList();
 		std::vector<ProcessInfo> FilterProcesses(const std::vector <ProcessInfo >& processes);
 		std::vector<ProcessInfo> FilterOnlyNETProcesses(const std::vector <ProcessInfo >& processes);
 		void FillModulesForProcess(const std::vector<wxString>& modules);
 		void UpdateModulesForProcessInfo(const ProcessInfo& processInfo);
 		void RestoreValuesFromConfig();
+		
 
 
 		DECLARE_EVENT_TABLE();
