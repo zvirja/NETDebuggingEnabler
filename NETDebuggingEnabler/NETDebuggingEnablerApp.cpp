@@ -4,7 +4,7 @@
 #include "PrivilegiesAdjuster.h"
 #include "SmoothScrollingWarning.h"
 
-using namespace Frames;
+using namespace UI;
 using namespace Managers;
 
 Managers::Configuration* NETDebuggingEnablerApp::AppConfig = new Managers::Configuration();

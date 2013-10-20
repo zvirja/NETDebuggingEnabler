@@ -34,7 +34,7 @@ namespace Managers
 	public:
 		ProcessManager();
 		~ProcessManager();
-		std::vector<Frames::ProcessInfo> GetProcessesList();
+		std::vector<ProcessInfo> GetProcessesList();
 		std::vector<wxString> GetModulesForProcessId(int processID, DWORD& resultCode, bool skipMappings = false);
 	private:
 		std::map<wxString, wxString> DriveMappings;

@@ -13,20 +13,20 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\Frames">
-      <UniqueIdentifier>{ede6b448-5112-4b32-b8af-ebc51c184b4e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Managers">
       <UniqueIdentifier>{5b927129-e472-4c57-9eab-648e02a43728}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Managers">
       <UniqueIdentifier>{53915c2f-d3d9-4675-bebf-f1bd3f05b816}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\MyUI">
+    <Filter Include="Header Files\UI">
       <UniqueIdentifier>{807fb879-01bb-4197-bd61-47a374dfeedb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\MyUI\ModuleCheckListBox">
+    <Filter Include="Header Files\UI\ModuleCheckListBox">
       <UniqueIdentifier>{034fb2bf-05cd-4257-a189-d7d83fbbcd61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UI">
+      <UniqueIdentifier>{ede6b448-5112-4b32-b8af-ebc51c184b4e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -34,7 +34,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MainFrame.h">
-      <Filter>Header Files\MyUI</Filter>
+      <Filter>Header Files\UI</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
@@ -45,9 +45,6 @@
     <ClInclude Include="PrivilegiesAdjuster.h">
       <Filter>Header Files\Managers</Filter>
     </ClInclude>
-    <ClInclude Include="ProcessInfo.h">
-      <Filter>Header Files\MyUI</Filter>
-    </ClInclude>
     <ClInclude Include="unique_handle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -55,16 +52,13 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="StatusTextStackUpdater.h">
-      <Filter>Header Files\MyUI</Filter>
+      <Filter>Header Files\UI</Filter>
     </ClInclude>
     <ClInclude Include="ModuleCheckListBoxItem.h">
-      <Filter>Header Files\MyUI\ModuleCheckListBox</Filter>
+      <Filter>Header Files\UI\ModuleCheckListBox</Filter>
     </ClInclude>
     <ClInclude Include="ModulesCheckListBox.h">
-      <Filter>Header Files\MyUI\ModuleCheckListBox</Filter>
-    </ClInclude>
-    <ClInclude Include="WildcardFilter.h">
-      <Filter>Header Files\MyUI\ModuleCheckListBox</Filter>
+      <Filter>Header Files\UI\ModuleCheckListBox</Filter>
     </ClInclude>
     <ClInclude Include="OptimizationController.h">
       <Filter>Header Files\Managers</Filter>
@@ -78,6 +72,12 @@
     <ClInclude Include="ProcessHintExtractor.h">
       <Filter>Header Files\Managers</Filter>
     </ClInclude>
+    <ClInclude Include="ProcessInfo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WildcardFilter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="NETDebuggingEnablerApp.cpp">
@@ -87,7 +87,7 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MainFrame.cpp">
-      <Filter>Source Files\Frames</Filter>
+      <Filter>Source Files\UI</Filter>
     </ClCompile>
     <ClCompile Include="ProcessManager.cpp">
       <Filter>Source Files\Managers</Filter>
@@ -95,20 +95,11 @@
     <ClCompile Include="PrivilegiesAdjuster.cpp">
       <Filter>Source Files\Managers</Filter>
     </ClCompile>
-    <ClCompile Include="ProcessInfo.cpp">
-      <Filter>Source Files\Frames</Filter>
-    </ClCompile>
     <ClCompile Include="unique_handle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="baseset.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ModulesCheckListBox.cpp">
-      <Filter>Source Files\Frames</Filter>
-    </ClCompile>
-    <ClCompile Include="WildcardFilter.cpp">
-      <Filter>Source Files\Frames</Filter>
+      <Filter>Source Files\UI</Filter>
     </ClCompile>
     <ClCompile Include="OptimizationController.cpp">
       <Filter>Source Files\Managers</Filter>
@@ -121,6 +112,15 @@
     </ClCompile>
     <ClCompile Include="ProcessHintExtractor.cpp">
       <Filter>Source Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="ProcessInfo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WildcardFilter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dummy.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

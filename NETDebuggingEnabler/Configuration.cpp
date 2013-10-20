@@ -81,8 +81,8 @@ namespace Managers
 	wxSize Configuration::GetLastSize()
 	{
 		int lastW, lastH;
-		int defaultW = Frames::MainFrame::FrameWidth;
-		int defaultH = Frames::MainFrame::FrameHeight;
+		int defaultW = UI::MainFrame::FrameWidth;
+		int defaultH = UI::MainFrame::FrameHeight;
 		actualConfig->Read(KeySizeW, &lastW, defaultW);
 		actualConfig->Read(KeySizeH, &lastH, defaultH);
 		return wxSize(lastW < defaultW ? defaultW : lastW, lastH < defaultH ? defaultH : lastH);

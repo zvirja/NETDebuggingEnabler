@@ -6,7 +6,7 @@
 using namespace std;
 using namespace Managers;
 
-namespace Frames
+namespace UI
 {
 	MainFrame::MainFrame() : isReady(false), wxFrame(nullptr, wxID_ANY, wxT(".NET assembly debugging enabler"),
 		wxDefaultPosition, wxSize(FrameWidth, FrameHeight),
@@ -207,7 +207,7 @@ namespace Frames
 		return move(result);
 	}
 
-	void MainFrame::UpdateModulesForProcessInfo(const Frames::ProcessInfo& processInfo)
+	void MainFrame::UpdateModulesForProcessInfo(const ProcessInfo& processInfo)
 	{
 		StatusTextStackUpdater statusUpdater(this, L"Updating modules list...");
 		DWORD result = 0;

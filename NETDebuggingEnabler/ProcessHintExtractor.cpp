@@ -1,6 +1,5 @@
 #include "baseset.h"
 #include "ProcessHintExtractor.h"
-#include <memory>
 #include <wx\cmdline.h>
 
 using namespace std;
@@ -29,7 +28,7 @@ namespace Managers
 	}
 
 
-	void ProcessHintExtractor::FillProcessInfoWithHint(DWORD processID, Frames::ProcessInfo& processInfo)
+	void ProcessHintExtractor::FillProcessInfoWithHint(DWORD processID, ProcessInfo& processInfo)
 	{
 		//Check if import was successful
 		if (NtQueryInformationProcess == nullptr)

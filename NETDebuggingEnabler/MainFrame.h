@@ -2,11 +2,8 @@
 #include "baseset.h"
 #include "ModulesCheckListBox.h"
 
-
-
-namespace Frames
+namespace UI
 {
-
 #define ID_PROCESSLIST wxID_HIGHEST+1
 #define ID_PROCESSFILTERBOX wxID_HIGHEST+2
 #define ID_PROCESSFILTERTEXT wxID_HIGHEST+3
@@ -45,10 +42,10 @@ namespace Frames
 
 		void BuildLayout();
 		void RefreshProcessList();
-		std::vector<ProcessInfo> FilterProcesses(const std::vector < Frames::ProcessInfo >& processes);
-		std::vector<ProcessInfo> FilterOnlyNETProcesses(const std::vector < Frames::ProcessInfo >& processes);
+		std::vector<ProcessInfo> FilterProcesses(const std::vector <ProcessInfo >& processes);
+		std::vector<ProcessInfo> FilterOnlyNETProcesses(const std::vector <ProcessInfo >& processes);
 		void FillModulesForProcess(const std::vector<wxString>& modules);
-		void UpdateModulesForProcessInfo(const Frames::ProcessInfo& processInfo);
+		void UpdateModulesForProcessInfo(const ProcessInfo& processInfo);
 		void RestoreValuesFromConfig();
 
 

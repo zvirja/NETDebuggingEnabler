@@ -12,7 +12,7 @@
 #include <FileAPI.h>
 
 using namespace std;
-using namespace Frames;
+using namespace UI;
 
 namespace Managers
 {

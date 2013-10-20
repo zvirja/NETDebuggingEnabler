@@ -1,6 +1,7 @@
 #pragma once
 #include "baseset.h"
-namespace Frames
+
+namespace UI
 {
 	class StatusTextStackUpdater
 	{

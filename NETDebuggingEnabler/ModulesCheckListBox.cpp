@@ -4,7 +4,7 @@
 #include <wx\filename.h>
 
 using namespace std;
-namespace Frames
+namespace UI
 {
 	ModulesCheckListBox::ModulesCheckListBox(
 		wxWindow *parent, wxWindowID winid, const wxPoint& pos,

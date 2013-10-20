@@ -79,7 +79,7 @@ namespace Managers
 	public:
 		ProcessHintExtractor();
 		~ProcessHintExtractor();
-		void FillProcessInfoWithHint(DWORD processID, Frames::ProcessInfo& processInfo);
+		void FillProcessInfoWithHint(DWORD processID, ProcessInfo& processInfo);
 	private:
 		HMODULE  hNtDll;
 		ProcessHintExtractorStuff::PNtQueryInformationProcess NtQueryInformationProcess;

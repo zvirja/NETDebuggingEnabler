@@ -4,7 +4,7 @@
 #include "WildcardFilter.h"
 #include "OptimizationController.h"
 
-namespace Frames
+namespace UI
 {
 	class ModulesCheckListBox : public wxCheckListBox
 	{

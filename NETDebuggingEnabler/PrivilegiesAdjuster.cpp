@@ -4,7 +4,6 @@
 namespace Managers
 {
 
-
 	bool PrivilegiesAdjuster::SetDebugPrevilege()
 	{
 		unique_handle hCurrentProcess(GetCurrentProcess()); // 

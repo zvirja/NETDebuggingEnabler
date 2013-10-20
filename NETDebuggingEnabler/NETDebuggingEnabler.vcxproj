@@ -263,7 +263,7 @@ md "$(TargetDir)Packed"
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Configuration.cpp" />
-    <ClCompile Include="baseset.cpp">
+    <ClCompile Include="dummy.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release Embedded|x64'">Create</PrecompiledHeader>
