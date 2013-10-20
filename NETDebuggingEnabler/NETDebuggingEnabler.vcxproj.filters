@@ -13,9 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Header Files\Managers">
-      <UniqueIdentifier>{5b927129-e472-4c57-9eab-648e02a43728}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Managers">
       <UniqueIdentifier>{53915c2f-d3d9-4675-bebf-f1bd3f05b816}</UniqueIdentifier>
     </Filter>
@@ -25,31 +22,28 @@
     <Filter Include="Header Files\UI\ModuleCheckListBox">
       <UniqueIdentifier>{034fb2bf-05cd-4257-a189-d7d83fbbcd61}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Common">
+      <UniqueIdentifier>{539eda13-8c5d-42ee-aaf6-331531d92895}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Common">
+      <UniqueIdentifier>{9ac5abfd-8683-4651-b02b-bbc2930b7b02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Managers">
+      <UniqueIdentifier>{5b927129-e472-4c57-9eab-648e02a43728}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source Files\UI">
       <UniqueIdentifier>{ede6b448-5112-4b32-b8af-ebc51c184b4e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="NETDebuggingEnablerApp.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="MainFrame.h">
       <Filter>Header Files\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="resource.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ProcessManager.h">
       <Filter>Header Files\Managers</Filter>
     </ClInclude>
     <ClInclude Include="PrivilegiesAdjuster.h">
       <Filter>Header Files\Managers</Filter>
-    </ClInclude>
-    <ClInclude Include="unique_handle.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="baseset.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="StatusTextStackUpdater.h">
       <Filter>Header Files\UI</Filter>
@@ -72,20 +66,26 @@
     <ClInclude Include="ProcessHintExtractor.h">
       <Filter>Header Files\Managers</Filter>
     </ClInclude>
+    <ClInclude Include="baseset.h">
+      <Filter>Header Files\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="NETDebuggingEnablerApp.h">
+      <Filter>Header Files\Common</Filter>
+    </ClInclude>
     <ClInclude Include="ProcessInfo.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="unique_handle.h">
+      <Filter>Header Files\Common</Filter>
     </ClInclude>
     <ClInclude Include="WildcardFilter.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="NETDebuggingEnablerApp.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="EntryPoint.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="MainFrame.cpp">
       <Filter>Source Files\UI</Filter>
     </ClCompile>
@@ -94,9 +94,6 @@
     </ClCompile>
     <ClCompile Include="PrivilegiesAdjuster.cpp">
       <Filter>Source Files\Managers</Filter>
-    </ClCompile>
-    <ClCompile Include="unique_handle.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ModulesCheckListBox.cpp">
       <Filter>Source Files\UI</Filter>
@@ -113,14 +110,23 @@
     <ClCompile Include="ProcessHintExtractor.cpp">
       <Filter>Source Files\Managers</Filter>
     </ClCompile>
+    <ClCompile Include="dummy.cpp">
+      <Filter>Source Files\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="EntryPoint.cpp">
+      <Filter>Source Files\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="NETDebuggingEnablerApp.cpp">
+      <Filter>Source Files\Common</Filter>
+    </ClCompile>
     <ClCompile Include="ProcessInfo.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="unique_handle.cpp">
+      <Filter>Source Files\Common</Filter>
     </ClCompile>
     <ClCompile Include="WildcardFilter.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="dummy.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Common</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
