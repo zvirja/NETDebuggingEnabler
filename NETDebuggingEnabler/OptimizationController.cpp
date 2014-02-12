@@ -22,10 +22,10 @@ namespace Managers
 	{
 		//wxFile iniFile(this->iniPath, wxFile::OpenMode::write);
 		unique_handle fileHandle(CreateFile(iniPath, GENERIC_WRITE, 0, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0));
-		if (fileHandle.get() == INVALID_HANDLE_VALUE)
+		if (*fileHandle == INVALID_HANDLE_VALUE)
 			return false;
 		DWORD written;
-		auto anciiString = IniFileContent.ToAscii();
+		wxScopedCharTypeBuffer<char> anciiString = IniFileContent.ToAscii();
 		if (WriteFile(fileHandle.get(), anciiString.data(), anciiString.length(), &written, nullptr))
 		{
 			return true;
@@ -70,7 +70,7 @@ namespace Managers
 	wxString OptimizationController::GetIniPathFromAssemblyPath(const wxString& assemblyPath)
 	{
 		wxFileName assemblyName(assemblyPath);
-		auto root = assemblyName.GetPath(wxPATH_GET_VOLUME|wxPATH_GET_SEPARATOR);
+		auto root = assemblyName.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR);
 		return wxString::Format(L"%s%s.ini", root, assemblyName.GetName());
 	}
 }

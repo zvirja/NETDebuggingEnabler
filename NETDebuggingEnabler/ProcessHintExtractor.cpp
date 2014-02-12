@@ -3,6 +3,7 @@
 #include <wx\cmdline.h>
 
 using namespace std;
+using namespace winternlAPI;
 using namespace ProcessHintExtractorStuff;
 
 namespace Managers
@@ -13,8 +14,8 @@ namespace Managers
 		hNtDll = LoadLibrary(L"ntdll.dll");
 		if (hNtDll == nullptr)
 			return;
-		NtQueryInformationProcess = (PNtQueryInformationProcess)GetProcAddress(hNtDll, "NtQueryInformationProcess");
-		if (NtQueryInformationProcess == nullptr) {
+		NtQueryInformationProcessMethod = (PNtQueryInformationProcess)GetProcAddress(hNtDll, "NtQueryInformationProcess");
+		if (NtQueryInformationProcessMethod == nullptr) {
 			FreeLibrary(hNtDll);
 			hNtDll = nullptr;
 			return;
@@ -31,7 +32,7 @@ namespace Managers
 	void ProcessHintExtractor::FillProcessInfoWithHint(DWORD processID, ProcessInfo& processInfo)
 	{
 		//Check if import was successful
-		if (NtQueryInformationProcess == nullptr)
+		if (NtQueryInformationProcessMethod == nullptr)
 			return;
 
 		//Apply this filter only to w3wp
@@ -50,12 +51,12 @@ namespace Managers
 		//Get basic info
 		PROCESS_BASIC_INFORMATION procBasicInfo;
 		ULONG resLen;
-		if (NtQueryInformationProcess(process.get(), ProcessBasicInformation, &procBasicInfo, sizeof(procBasicInfo), &resLen) != ERROR_SUCCESS)
+		if (NtQueryInformationProcessMethod(process.get(), ProcessBasicInformation, &procBasicInfo, sizeof(procBasicInfo), &resLen) != ERROR_SUCCESS)
 			return;
 
 		//Extract PEB from foreign memory
 		PEB peb;
-		size_t pebResLen;
+		SIZE_T pebResLen;
 		if (!ReadProcessMemory(process.get(), procBasicInfo.PebBaseAddress, &peb, sizeof(PEB), &pebResLen))
 			return;
 
@@ -65,7 +66,7 @@ namespace Managers
 			return;
 
 		//Extract command line parameters
-		UNICODE_STRING& commandLine = procParams.CommandLine;
+		winternlAPI::UNICODE_STRING& commandLine = procParams.CommandLine;
 		size_t buffSize = commandLine.Length + 2;
 		unique_ptr<wchar_t[]> commandLineBuffer = unique_ptr<wchar_t[]>(new wchar_t[buffSize]);
 		if (!ReadProcessMemory(process.get(), commandLine.Buffer, commandLineBuffer.get(), buffSize, &pebResLen))
